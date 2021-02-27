@@ -33,8 +33,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(id, name, givenNumber, address, paymentStatus, orderStatus, orderTime, quantity, userNumber, product) {
-  return { id, name, givenNumber, address, paymentStatus, orderStatus, orderTime, quantity, userNumber, product };
+function createData(id, name, givenNumber, address, paymentMethod, paymentStatus, orderStatus, orderTime, quantity, userNumber, product) {
+  return { id, name, givenNumber, address, paymentMethod, paymentStatus, orderStatus, orderTime, quantity, userNumber, product };
 }
 
 const useStyles = makeStyles(theme => ({
@@ -97,7 +97,7 @@ export default function DataTable({ apiData, forceUpdate }) {
     }
   };
 
-  const rows = apiData.map((data, idx) => createData(data._id, data.name, data.givenNumber, data.address, data.paymentStatus, data.orderStatus, data.orderTime, data.qty, data.userNumber, data.product));
+  const rows = apiData.map((data, idx) => createData(data._id, data.name, data.givenNumber, data.address, data.paymentMethod, data.paymentStatus, data.orderStatus, data.orderTime, data.qty, data.userNumber, data.product));
 
   return (
     <>
@@ -110,6 +110,7 @@ export default function DataTable({ apiData, forceUpdate }) {
             <StyledTableCell align="right">Name</StyledTableCell>
             <StyledTableCell align="right">Given Number</StyledTableCell>
             <StyledTableCell align="right">Address</StyledTableCell>
+            <StyledTableCell align="right">Payment Method</StyledTableCell>
             <StyledTableCell align="right">Payment Status</StyledTableCell>
             <StyledTableCell align="right">Order Status</StyledTableCell>
             <StyledTableCell align="right">Order Time</StyledTableCell>
@@ -133,6 +134,8 @@ export default function DataTable({ apiData, forceUpdate }) {
                 <StyledTableCell align="right">{row.givenNumber}</StyledTableCell>
 
                 <StyledTableCell align="right">{row.address}</StyledTableCell>
+
+                <StyledTableCell align="right">{row.paymentMethod}</StyledTableCell>
 
                 <StyledTableCell align="right">{row.paymentStatus}</StyledTableCell>
 
@@ -166,7 +169,7 @@ export default function DataTable({ apiData, forceUpdate }) {
                   </div>
                 </StyledTableCell>
 
-                <StyledTableCell align="right">{row.qty}</StyledTableCell>
+                <StyledTableCell align="right">{row.quantity}</StyledTableCell>
 
                 <StyledTableCell align="right">{row.userNumber}</StyledTableCell>
 
