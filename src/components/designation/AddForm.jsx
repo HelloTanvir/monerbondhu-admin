@@ -37,15 +37,15 @@ export default function AddForm({ forceUpdate }) {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-        const response = await axios.post('/api/consultent/designation',{ designation }, {
-            headers: {Authorization: token}
-        });
+      const response = await axios.post('/consultent/designation', { designation }, {
+        headers: { Authorization: token }
+      });
 
-        if (response) {
-          forceUpdate();
-          setIsLoading(false);
-          setDesignation('');
-        }
+      if (response) {
+        forceUpdate();
+        setIsLoading(false);
+        setDesignation('');
+      }
     } catch (err) {
       setIsLoading(false);
       setDesignation('');
@@ -55,37 +55,37 @@ export default function AddForm({ forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <div style={{display: 'flex', justifyContent: 'flex-end', paddingBottom: 22}}>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        create new designation
+      <Loader open={isLoading} />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: 22 }}>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          create new designation
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Create New Designation</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please fill up the form...
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Create New Designation</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please fill up the form...
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            name="designation"
-            label="Designation"
-            fullWidth
-            value={designation}
-            onChange={e => setDesignation(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+            <TextField
+              autoFocus
+              margin="dense"
+              name="designation"
+              label="Designation"
+              fullWidth
+              value={designation}
+              onChange={e => setDesignation(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Submit
+            <Button onClick={handleSubmit} color="primary">
+              Submit
           </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+          </DialogActions>
+        </Dialog>
+      </div>
     </>
   );
 }

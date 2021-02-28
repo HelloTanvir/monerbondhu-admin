@@ -81,8 +81,8 @@ export default function DataTable({ apiData, forceUpdate }) {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = axios.patch('/api/shop/order', {id, orderStatus}, {
-        headers: {Authorization: token}
+      const response = axios.patch('/shop/order', { id, orderStatus }, {
+        headers: { Authorization: token }
       });
 
       if (response) {
@@ -101,28 +101,28 @@ export default function DataTable({ apiData, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Product</StyledTableCell>
-            <StyledTableCell align="right">Name</StyledTableCell>
-            <StyledTableCell align="right">Given Number</StyledTableCell>
-            <StyledTableCell align="right">Address</StyledTableCell>
-            <StyledTableCell align="right">Payment Method</StyledTableCell>
-            <StyledTableCell align="right">Payment Status</StyledTableCell>
-            <StyledTableCell align="right">Order Status</StyledTableCell>
-            <StyledTableCell align="right">Order Time</StyledTableCell>
-            <StyledTableCell align="right">QTY</StyledTableCell>
-            <StyledTableCell align="right">User Number</StyledTableCell>
-            <StyledTableCell align="right">Edit</StyledTableCell>
-            {/* <StyledTableCell align="right">Delete</StyledTableCell> */}
-          </TableRow>
-        </TableHead>
+      <Loader open={isLoading} />
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Product</StyledTableCell>
+              <StyledTableCell align="right">Name</StyledTableCell>
+              <StyledTableCell align="right">Given Number</StyledTableCell>
+              <StyledTableCell align="right">Address</StyledTableCell>
+              <StyledTableCell align="right">Payment Method</StyledTableCell>
+              <StyledTableCell align="right">Payment Status</StyledTableCell>
+              <StyledTableCell align="right">Order Status</StyledTableCell>
+              <StyledTableCell align="right">Order Time</StyledTableCell>
+              <StyledTableCell align="right">QTY</StyledTableCell>
+              <StyledTableCell align="right">User Number</StyledTableCell>
+              <StyledTableCell align="right">Edit</StyledTableCell>
+              {/* <StyledTableCell align="right">Delete</StyledTableCell> */}
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {rows.map((row, idx) => (
+          <TableBody>
+            {rows.map((row, idx) => (
               <StyledTableRow key={idx}>
                 {/* <StyledTableCell component="th" scope="row"> */}
                 <StyledTableCell>
@@ -143,29 +143,29 @@ export default function DataTable({ apiData, forceUpdate }) {
                   {
                     isEditing && editingIdx === idx
                       ? <FormControl className={classes.formControl}>
-                          <Select
-                            value={orderStatus || row.orderStatus}
-                            onChange={(e) => setOrderStatus(e.target.value)}
-                            displayEmpty
-                            className={classes.selectEmpty}
-                            inputProps={{ 'aria-label': 'Without label' }}
-                          >
-                            {
-                              ['pending', 'picked', 'shipped', 'delivered' , 'cancelled']
-                                .map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)
-                            }
-                          </Select>
-                        </FormControl>
+                        <Select
+                          value={orderStatus || row.orderStatus}
+                          onChange={(e) => setOrderStatus(e.target.value)}
+                          displayEmpty
+                          className={classes.selectEmpty}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                          {
+                            ['pending', 'picked', 'shipped', 'delivered', 'cancelled']
+                              .map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)
+                          }
+                        </Select>
+                      </FormControl>
                       : row.orderStatus
                   }
                 </StyledTableCell>
 
                 <StyledTableCell align="right">
-                  <span style={{fontWeight: 'bold'}}>Date: </span>
+                  <span style={{ fontWeight: 'bold' }}>Date: </span>
                   {new Date(row.orderTime).toLocaleDateString("en-US")}
                   <div>
-                    <span style={{fontWeight: 'bold'}}>Time: </span>
-                    {new Date(row.orderTime).toLocaleTimeString("en-US")} 
+                    <span style={{ fontWeight: 'bold' }}>Time: </span>
+                    {new Date(row.orderTime).toLocaleTimeString("en-US")}
                   </div>
                 </StyledTableCell>
 
@@ -176,18 +176,18 @@ export default function DataTable({ apiData, forceUpdate }) {
                 <StyledTableCell align="right">
                   {
                     (isEditing && editingIdx === idx)
-                    ? <div>
+                      ? <div>
                         <ClearIcon
-                          style={{cursor: 'pointer', color: 'red', marginRight: 7}}
+                          style={{ cursor: 'pointer', color: 'red', marginRight: 7 }}
                           onClick={() => handleClose()}
                         />
                         <CheckIcon
-                          style={{cursor: 'pointer', color: 'green'}}
+                          style={{ cursor: 'pointer', color: 'green' }}
                           onClick={() => handleSubmit(row.id)}
                         />
                       </div>
-                    : <EditIcon
-                        style={{cursor: 'pointer'}}
+                      : <EditIcon
+                        style={{ cursor: 'pointer' }}
                         onClick={() => editButtonHandler(row.orderStatus, idx)}
                       />
                   }
@@ -197,9 +197,9 @@ export default function DataTable({ apiData, forceUpdate }) {
                 </StyledTableCell> */}
               </StyledTableRow>
             ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }

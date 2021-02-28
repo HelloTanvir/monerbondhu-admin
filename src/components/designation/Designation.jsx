@@ -19,8 +19,8 @@ const Designation = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/api/consultent/designation', {
-                    headers: {Authorization: token}
+                const response = await axios.get('/consultent/designation', {
+                    headers: { Authorization: token }
                 });
 
                 if (response) setIsLoading(false);
@@ -36,10 +36,10 @@ const Designation = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <DataTable apiData={apiData} forceUpdate={forceUpdate} />
+            <Loader open={isLoading} />
+            <DataTable apiData={apiData} forceUpdate={forceUpdate} />
         </>
-      );
+    );
 }
 
 export default Designation;

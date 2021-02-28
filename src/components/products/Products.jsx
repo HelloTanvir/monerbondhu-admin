@@ -19,8 +19,8 @@ const Products = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/api/shop', {
-                    headers: {Authorization: token}
+                const response = await axios.get('/shop', {
+                    headers: { Authorization: token }
                 });
 
                 if (response) setIsLoading(false);
@@ -36,10 +36,10 @@ const Products = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <DataTable apiData={apiData} forceUpdate={forceUpdate} />
+            <Loader open={isLoading} />
+            <DataTable apiData={apiData} forceUpdate={forceUpdate} />
         </>
-      );
+    );
 }
 
 export default Products;

@@ -19,8 +19,8 @@ const PinVideo = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/api/pinvideo', {
-                    headers: {Authorization: token}
+                const response = await axios.get('/pinvideo', {
+                    headers: { Authorization: token }
                 });
 
                 if (response) setIsLoading(false);
@@ -36,10 +36,10 @@ const PinVideo = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <DataTable apiData={apiData} forceUpdate={forceUpdate} />
+            <Loader open={isLoading} />
+            <DataTable apiData={apiData} forceUpdate={forceUpdate} />
         </>
-      );
+    );
 }
 
 export default PinVideo;

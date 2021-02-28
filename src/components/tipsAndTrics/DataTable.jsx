@@ -68,8 +68,8 @@ export default function MediaCard({ apiData, forceUpdate }) {
 
     const token = `Bearer ${localStorage.getItem('token')}`;
     try {
-      const response = axios.patch('/api/tipsamdtricks', {id, title, content}, {
-        headers: {Authorization: token}
+      const response = axios.patch('/tipsamdtricks', { id, title, content }, {
+        headers: { Authorization: token }
       });
 
       if (response) {
@@ -87,25 +87,25 @@ export default function MediaCard({ apiData, forceUpdate }) {
       alert(err.response.data.message || 'Something went wrong');
     }
   };
-  
+
   const handleDelete = async (id) => {
     setIsLoading(true);
 
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-        const response = await axios.delete('/api/tipsamdtricks', {
-            headers: {Authorization: token},
-            data: {
-                id
-            }
-        });
-
-        if (response) {
-          setIsLoading(false);
-          alert('Deleted Successfully');
-          forceUpdate();
+      const response = await axios.delete('/tipsamdtricks', {
+        headers: { Authorization: token },
+        data: {
+          id
         }
+      });
+
+      if (response) {
+        setIsLoading(false);
+        alert('Deleted Successfully');
+        forceUpdate();
+      }
     } catch (err) {
       setIsLoading(false);
       alert(err.response.data.message || 'Something went wrong');
@@ -114,34 +114,34 @@ export default function MediaCard({ apiData, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <AddForm forceUpdate={forceUpdate} />
-    <div className={classes.consultantContainer}>
-      {
-        apiData.map((data, idx) => (
-          <Card key={idx} className={classes.root}>
-            <CardActionArea>
-              {
-                data.videoLink
-                  ? <a target="_blank" rel="noreferrer" href={data.videoLink}>
+      <Loader open={isLoading} />
+      <AddForm forceUpdate={forceUpdate} />
+      <div className={classes.consultantContainer}>
+        {
+          apiData.map((data, idx) => (
+            <Card key={idx} className={classes.root}>
+              <CardActionArea>
+                {
+                  data.videoLink
+                    ? <a target="_blank" rel="noreferrer" href={data.videoLink}>
                       <CardMedia
                         className={classes.media}
                         image={data.image || Avatar}
                         title="Consultant"
                       />
                     </a>
-                  : <CardMedia
+                    : <CardMedia
                       className={classes.media}
                       image={data.image || Avatar}
                       title="Consultant"
                       onClick={() => alert('This has no video attached')}
                     />
-              }
-              
-              <CardContent>
-                {
-                  (isEditing && editingIdx === idx)
-                    ? <TextField
+                }
+
+                <CardContent>
+                  {
+                    (isEditing && editingIdx === idx)
+                      ? <TextField
                         id="title"
                         label="Title"
                         variant="outlined"
@@ -149,27 +149,27 @@ export default function MediaCard({ apiData, forceUpdate }) {
                         value={title}
                         onChange={e => setTitle(e.target.value)}
                       />
-                    : <Typography gutterBottom variant="h5" component="h2">
+                      : <Typography gutterBottom variant="h5" component="h2">
                         {data.title}
                       </Typography>
-                }
-                
-                <Typography variant="body2" color="textSecondary" component="p">
-                  <Typography variant="h6" color='textPrimary' style={{fontSize: 16, display: 'inline-block'}}>
-                    Date:
+                  }
+
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
+                      Date:
                   </Typography> {new Date(data.date).toLocaleDateString("en-US")} <br />
 
-                  <Typography variant="h6" color='textPrimary' style={{fontSize: 16, display: 'inline-block'}}>
-                    Time:
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
+                      Time:
                   </Typography> {new Date(data.date).toLocaleTimeString("en-US")} <br />
 
-                  <Typography variant="h6" color='textPrimary' style={{fontSize: 16, display: 'inline-block'}}>
-                    View Count:
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
+                      View Count:
                   </Typography> {data.viewCount} <br />
 
-                  {
-                    (isEditing && editingIdx === idx)
-                      ? <TextField
+                    {
+                      (isEditing && editingIdx === idx)
+                        ? <TextField
                           id="content"
                           label="Content"
                           variant="outlined"
@@ -178,62 +178,62 @@ export default function MediaCard({ apiData, forceUpdate }) {
                           value={content}
                           onChange={e => setContent(e.target.value)}
                         />
-                      : <>
+                        : <>
                           <Typography
                             variant="h6"
                             color='textPrimary'
-                            style={{fontSize: 16, display: 'inline-block',}}
+                            style={{ fontSize: 16, display: 'inline-block', }}
                           >
                             Content:
                           </Typography> {
                             data.content.length > 100
                               ? <>
-                                  {`${data.content.slice(0, 99)}...`}
-                                  <FullContent content={data.content} />
-                                </>
+                                {`${data.content.slice(0, 99)}...`}
+                                <FullContent content={data.content} />
+                              </>
                               : data.content
                           }
                         </>
-                  }
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions style={{display: 'flex', justifyContent: 'space-between'}}>
-              <Button
-                size="small"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                onClick={() => handleDelete(data._id)}
-              >
-                Delete
+                    }
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                  size="small"
+                  color="secondary"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => handleDelete(data._id)}
+                >
+                  Delete
               </Button>
 
-              {
-                isEditing && editingIdx === idx
-                ? <div>
-                    <ClearIcon
-                      style={{cursor: 'pointer', color: 'red', marginRight: 7}}
-                      onClick={() => handleClose()}
-                    />
-                    <CheckIcon
-                      style={{cursor: 'pointer', color: 'green'}}
-                      onClick={() => handleEdit(data._id)}
-                    />
-                  </div>
-                : <Button
-                    size="small"
-                    color="primary"
-                    startIcon={<EditIcon />}
-                    onClick={() => editButtonHandler(data.title, data.content, idx)}
-                  >
-                    edit
+                {
+                  isEditing && editingIdx === idx
+                    ? <div>
+                      <ClearIcon
+                        style={{ cursor: 'pointer', color: 'red', marginRight: 7 }}
+                        onClick={() => handleClose()}
+                      />
+                      <CheckIcon
+                        style={{ cursor: 'pointer', color: 'green' }}
+                        onClick={() => handleEdit(data._id)}
+                      />
+                    </div>
+                    : <Button
+                      size="small"
+                      color="primary"
+                      startIcon={<EditIcon />}
+                      onClick={() => editButtonHandler(data.title, data.content, idx)}
+                    >
+                      edit
                   </Button>
-              }
-            </CardActions>
-          </Card>
-        ))
-      }
-    </div>
+                }
+              </CardActions>
+            </Card>
+          ))
+        }
+      </div>
     </>
   );
 }

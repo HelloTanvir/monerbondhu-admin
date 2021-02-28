@@ -21,8 +21,8 @@ const Consultant = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/api/consultent', {
-                    headers: {Authorization: token}
+                const response = await axios.get('/consultent', {
+                    headers: { Authorization: token }
                 });
 
                 if (response) setIsLoading(false);
@@ -39,10 +39,10 @@ const Consultant = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <DataTable apiData={apiData} designations={designations} forceUpdate={forceUpdate} />
+            <Loader open={isLoading} />
+            <DataTable apiData={apiData} designations={designations} forceUpdate={forceUpdate} />
         </>
-      );
+    );
 }
 
 export default Consultant;

@@ -35,25 +35,25 @@ export default function MediaCard({ apiData, forceUpdate }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const handleDelete = async (id) => {
     setIsLoading(true);
 
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-        const response = await axios.delete('/api/pinvideo', {
-            headers: {Authorization: token},
-            data: {
-                id
-            }
-        });
-
-        if (response) {
-          setIsLoading(false);
-          alert('Deleted Successfully');
-          forceUpdate();
+      const response = await axios.delete('/pinvideo', {
+        headers: { Authorization: token },
+        data: {
+          id
         }
+      });
+
+      if (response) {
+        setIsLoading(false);
+        alert('Deleted Successfully');
+        forceUpdate();
+      }
     } catch (err) {
       setIsLoading(false);
       alert(err.response.data.message || 'Something went wrong');
@@ -62,50 +62,50 @@ export default function MediaCard({ apiData, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <AddForm forceUpdate={forceUpdate} />
-    <div className={classes.dataContainer}>
-      {
-        apiData.map((data, idx) => (
-          <Card key={idx} className={classes.root}>
-            <CardActionArea>
-              {
-                data.ytlink
-                  ? <a target="_blank" rel="noreferrer" href={data.ytlink}>
+      <Loader open={isLoading} />
+      <AddForm forceUpdate={forceUpdate} />
+      <div className={classes.dataContainer}>
+        {
+          apiData.map((data, idx) => (
+            <Card key={idx} className={classes.root}>
+              <CardActionArea>
+                {
+                  data.ytlink
+                    ? <a target="_blank" rel="noreferrer" href={data.ytlink}>
                       <CardMedia
                         className={classes.media}
                         image={data.image || Avatar}
                         title="Consultant"
                       />
                     </a>
-                  : <CardMedia
+                    : <CardMedia
                       className={classes.media}
                       image={data.image || Avatar}
                       title="Consultant"
                       onClick={() => alert('This has no video attached')}
                     />
-              }
-              
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {data.name}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions style={{display: 'flex', justifyContent: 'space-between'}}>
-              <Button
-                size="small"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                onClick={() => handleDelete(data._id)}
-              >
-                Delete
+                }
+
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {data.name}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                  size="small"
+                  color="secondary"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => handleDelete(data._id)}
+                >
+                  Delete
               </Button>
-            </CardActions>
-          </Card>
-        ))
-      }
-    </div>
+              </CardActions>
+            </Card>
+          ))
+        }
+      </div>
     </>
   );
 }

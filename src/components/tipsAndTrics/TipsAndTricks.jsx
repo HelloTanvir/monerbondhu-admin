@@ -19,8 +19,8 @@ const TipsAndTricks = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/api/tipsamdtricks', {
-                    headers: {Authorization: token}
+                const response = await axios.get('/tipsamdtricks', {
+                    headers: { Authorization: token }
                 });
 
                 if (response) setIsLoading(false);
@@ -36,10 +36,10 @@ const TipsAndTricks = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <DataTable apiData={apiData} forceUpdate={forceUpdate} />
+            <Loader open={isLoading} />
+            <DataTable apiData={apiData} forceUpdate={forceUpdate} />
         </>
-      );
+    );
 }
 
 export default TipsAndTricks;

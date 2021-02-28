@@ -12,7 +12,7 @@ import Loader from '../Loader';
 export default function AddForm({ forceUpdate }) {
 
   const [open, setOpen] = React.useState(false);
-  
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState('');
@@ -31,7 +31,7 @@ export default function AddForm({ forceUpdate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!name || !ytlink)
       return alert('Please fillup the form');
 
@@ -42,7 +42,7 @@ export default function AddForm({ forceUpdate }) {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = await axios.post('/api/lightexercise', {name, ytlink}, {
+      const response = await axios.post('/lightexercise', { name, ytlink }, {
         headers: {
           Authorization: token
         }
@@ -57,7 +57,7 @@ export default function AddForm({ forceUpdate }) {
       }
     } catch (err) {
       setIsLoading(false);
-      
+
       setName('');
       setYtlink('');
 
@@ -67,47 +67,47 @@ export default function AddForm({ forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <div style={{display: 'flex', justifyContent: 'flex-end', paddingBottom: 22}}>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        create new light exercise
+      <Loader open={isLoading} />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: 22 }}>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          create new light exercise
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth='xs'>
-        <DialogTitle id="form-dialog-title">Create New Light Exercise</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please fill up the form...
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth='xs'>
+          <DialogTitle id="form-dialog-title">Create New Light Exercise</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please fill up the form...
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            name="name"
-            label="Name"
-            fullWidth
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
+            <TextField
+              autoFocus
+              margin="dense"
+              name="name"
+              label="Name"
+              fullWidth
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
 
-          <TextField
-            autoFocus
-            margin="dense"
-            name="ytlink"
-            label="Youtube Link"
-            fullWidth
-            value={ytlink}
-            onChange={e => setYtlink(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+            <TextField
+              autoFocus
+              margin="dense"
+              name="ytlink"
+              label="Youtube Link"
+              fullWidth
+              value={ytlink}
+              onChange={e => setYtlink(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Submit
+            <Button onClick={handleSubmit} color="primary">
+              Submit
           </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+          </DialogActions>
+        </Dialog>
+      </div>
     </>
   );
 }

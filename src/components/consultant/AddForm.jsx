@@ -22,7 +22,7 @@ export default function AddForm({ designations, forceUpdate }) {
 
   const [open, setOpen] = React.useState(false);
   const [openSelect, setOpenSelect] = React.useState(false);
-  
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState('');
@@ -49,7 +49,7 @@ export default function AddForm({ designations, forceUpdate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!name || !description || !visitingDay || !visitingTime || !designation || !image) return alert('Please fillup the form');
 
     setOpen(false);
@@ -67,7 +67,7 @@ export default function AddForm({ designations, forceUpdate }) {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = await axios.post('/api/consultent', bodyFormData, {
+      const response = await axios.post('/consultent', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: token
@@ -87,7 +87,7 @@ export default function AddForm({ designations, forceUpdate }) {
       }
     } catch (err) {
       setIsLoading(false);
-      
+
       setName('');
       setDescription('');
       setVisitingDay('');
@@ -101,113 +101,113 @@ export default function AddForm({ designations, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <div style={{display: 'flex', justifyContent: 'flex-end', paddingBottom: 22}}>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        create new consultant
+      <Loader open={isLoading} />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: 22 }}>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          create new consultant
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth='xs'>
-        <DialogTitle id="form-dialog-title">Create New Consultant</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please fill up the form...
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth='xs'>
+          <DialogTitle id="form-dialog-title">Create New Consultant</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please fill up the form...
           </DialogContentText>
 
-          <TextField
-            autoFocus
-            margin="dense"
-            name="name"
-            label="Name"
-            fullWidth
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-
-          <FormControl fullWidth>
-            <InputLabel id="demo-controlled-open-select-label">Designation</InputLabel>
-            <Select
-              labelId="demo-controlled-open-select-label"
-              id="demo-controlled-open-select"
-              open={openSelect}
-              onClose={() => setOpenSelect(false)}
-              onOpen={() => setOpenSelect(true)}
-              value={designation}
-              onChange={e => setDesignation(e.target.value)}
-            >
-              {
-                designations.map((designation, idx) => <MenuItem key={idx} value={designation}>{designation}</MenuItem>)
-              }
-            </Select>
-          </FormControl>
-
-          <TextField
-            autoFocus
-            margin="dense"
-            name="visitingDay"
-            label="Visiting Day"
-            fullWidth
-            value={visitingDay}
-            onChange={e => setVisitingDay(e.target.value)}
-          />
-
-          <TextField
-            autoFocus
-            margin="dense"
-            name="visitingTime"
-            label="Visiting Time"
-            fullWidth
-            value={visitingTime}
-            onChange={e => setVisitingTime(e.target.value)}
-          />
-
-          <TextField
-            autoFocus
-            margin="dense"
-            name="description"
-            label="Description"
-            multiline
-            fullWidth
-            value={description}
-            style={{marginBottom: 36}}
-            onChange={e => setDescription(e.target.value)}
-          />
-
-          <span>
-            <input
-              color="primary"
-              accept="image/*"
-              type="file"
-              onChange={e => setImage(e.target.files[0])}
-              id="icon-button-file"
-              hidden
+            <TextField
+              autoFocus
+              margin="dense"
+              name="name"
+              label="Name"
+              fullWidth
+              value={name}
+              onChange={e => setName(e.target.value)}
             />
-            <label htmlFor="icon-button-file">
-              <Button
-                variant="contained"
-                component="span"
-                className={classes.button}
-                size="large"
-                fullWidth
-                color="primary"
-                endIcon={<ImageIcon />}
-                style={{textTransform: 'capitalize', margin: 'unset'}}
-              >
-                Image
-              </Button>
-            </label>
-          </span>
 
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+            <FormControl fullWidth>
+              <InputLabel id="demo-controlled-open-select-label">Designation</InputLabel>
+              <Select
+                labelId="demo-controlled-open-select-label"
+                id="demo-controlled-open-select"
+                open={openSelect}
+                onClose={() => setOpenSelect(false)}
+                onOpen={() => setOpenSelect(true)}
+                value={designation}
+                onChange={e => setDesignation(e.target.value)}
+              >
+                {
+                  designations.map((designation, idx) => <MenuItem key={idx} value={designation}>{designation}</MenuItem>)
+                }
+              </Select>
+            </FormControl>
+
+            <TextField
+              autoFocus
+              margin="dense"
+              name="visitingDay"
+              label="Visiting Day"
+              fullWidth
+              value={visitingDay}
+              onChange={e => setVisitingDay(e.target.value)}
+            />
+
+            <TextField
+              autoFocus
+              margin="dense"
+              name="visitingTime"
+              label="Visiting Time"
+              fullWidth
+              value={visitingTime}
+              onChange={e => setVisitingTime(e.target.value)}
+            />
+
+            <TextField
+              autoFocus
+              margin="dense"
+              name="description"
+              label="Description"
+              multiline
+              fullWidth
+              value={description}
+              style={{ marginBottom: 36 }}
+              onChange={e => setDescription(e.target.value)}
+            />
+
+            <span>
+              <input
+                color="primary"
+                accept="image/*"
+                type="file"
+                onChange={e => setImage(e.target.files[0])}
+                id="icon-button-file"
+                hidden
+              />
+              <label htmlFor="icon-button-file">
+                <Button
+                  variant="contained"
+                  component="span"
+                  className={classes.button}
+                  size="large"
+                  fullWidth
+                  color="primary"
+                  endIcon={<ImageIcon />}
+                  style={{ textTransform: 'capitalize', margin: 'unset' }}
+                >
+                  Image
+              </Button>
+              </label>
+            </span>
+
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Submit
+            <Button onClick={handleSubmit} color="primary">
+              Submit
           </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+          </DialogActions>
+        </Dialog>
+      </div>
     </>
   );
 }

@@ -19,12 +19,12 @@ import Classes from './Login.module.css';
 const Copyright = () => {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
-        <Link color="inherit" href="#">
-            Moner Bondhu
+            {'Copyright © '}
+            <Link color="inherit" href="#">
+                Moner Bondhu
         </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
+            {new Date().getFullYear()}
+            {'.'}
         </Typography>
     );
 }
@@ -55,10 +55,10 @@ const Login = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
-    
+
     const classes = useStyles();
 
-    const [ state, setState ] = useState({
+    const [state, setState] = useState({
         username: '',
         password: '',
         remember: false
@@ -82,7 +82,7 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-            const response = await Axios.post('/api/admin/login', {
+            const response = await Axios.post('/admin/login', {
                 username: state.username,
                 password: state.password
             });
@@ -91,9 +91,9 @@ const Login = () => {
                 setErrorMsg('');
                 setIsLoading(false);
             }
-            
+
             localStorage.setItem('token', response.data.token);
-                        
+
             history.push('/dashboard');
         } catch (err) {
             setErrorMsg(err.response.data.message);
@@ -104,74 +104,74 @@ const Login = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <Container component="main" maxWidth="xs" className={Classes.loginBox}>
-        <CssBaseline />
-        <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-            Log in
+            <Loader open={isLoading} />
+            <Container component="main" maxWidth="xs" className={Classes.loginBox}>
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Log in
             </Typography>
-            <form className={classes.form} noValidate onSubmit={submitHandler}>
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="User Name"
-                name="username"
-                autoFocus
-                value={state.username}
-                onChange={changeHandler}
-            />
-            {
-                !!errorMsg ? <div className={Classes.error_msg}>{errorMsg}</div> : ''
-            }
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={state.password}
-                onChange={changeHandler}
-            />
-            {
-                !!errorMsg ? <div className={Classes.error_msg}>{errorMsg}</div> : ''
-            }
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        color="primary"
-                        name="remember"
-                        onChange={changeHandler}
-                        checked={state.remember}
-                     />
-                }
-                label="Remember me"
-            />
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-            >
-                Log In
+                    <form className={classes.form} noValidate onSubmit={submitHandler}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="User Name"
+                            name="username"
+                            autoFocus
+                            value={state.username}
+                            onChange={changeHandler}
+                        />
+                        {
+                            !!errorMsg ? <div className={Classes.error_msg}>{errorMsg}</div> : ''
+                        }
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            value={state.password}
+                            onChange={changeHandler}
+                        />
+                        {
+                            !!errorMsg ? <div className={Classes.error_msg}>{errorMsg}</div> : ''
+                        }
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    color="primary"
+                                    name="remember"
+                                    onChange={changeHandler}
+                                    checked={state.remember}
+                                />
+                            }
+                            label="Remember me"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Log In
             </Button>
-            </form>
-        </div>
-        <Box mt={8}>
-            <Copyright />
-        </Box>
-        </Container>
+                    </form>
+                </div>
+                <Box mt={8}>
+                    <Copyright />
+                </Box>
+            </Container>
         </>
     );
 }

@@ -85,8 +85,8 @@ export default function DataTable({ apiData, forceUpdate }) {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = axios.patch('/api/consultent/appointment', {id, state}, {
-        headers: {Authorization: token}
+      const response = axios.patch('/consultent/appointment', { id, state }, {
+        headers: { Authorization: token }
       });
 
       if (response) {
@@ -105,26 +105,26 @@ export default function DataTable({ apiData, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Number</StyledTableCell>
-            <StyledTableCell align="right">Consultant</StyledTableCell>
-            <StyledTableCell align="right">Appointment Date</StyledTableCell>
-            <StyledTableCell align="right">State</StyledTableCell>
-            <StyledTableCell align="right">Story</StyledTableCell>
-            <StyledTableCell align="right">Age</StyledTableCell>
-            <StyledTableCell align="right">Date of birth</StyledTableCell>
-            <StyledTableCell align="right">Edit</StyledTableCell>
-            {/* <StyledTableCell align="right">Delete</StyledTableCell> */}
-          </TableRow>
-        </TableHead>
+      <Loader open={isLoading} />
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell align="right">Number</StyledTableCell>
+              <StyledTableCell align="right">Consultant</StyledTableCell>
+              <StyledTableCell align="right">Appointment Date</StyledTableCell>
+              <StyledTableCell align="right">State</StyledTableCell>
+              <StyledTableCell align="right">Story</StyledTableCell>
+              <StyledTableCell align="right">Age</StyledTableCell>
+              <StyledTableCell align="right">Date of birth</StyledTableCell>
+              <StyledTableCell align="right">Edit</StyledTableCell>
+              {/* <StyledTableCell align="right">Delete</StyledTableCell> */}
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {rows.map((row, idx) => (
+          <TableBody>
+            {rows.map((row, idx) => (
               <StyledTableRow key={idx}>
                 <StyledTableCell component="th" scope="row">
                   {row.name}
@@ -132,30 +132,30 @@ export default function DataTable({ apiData, forceUpdate }) {
                 <StyledTableCell align="right">{row.consultant}</StyledTableCell>
                 <StyledTableCell align="right">{row.consultant}</StyledTableCell>
                 <StyledTableCell align="right">
-                  <span style={{fontWeight: 'bold'}}>Date: </span>
+                  <span style={{ fontWeight: 'bold' }}>Date: </span>
                   {new Date(row.appointmentDate).toLocaleDateString("en-US")}
                   <div>
-                    <span style={{fontWeight: 'bold'}}>Time: </span>
-                    {new Date(row.appointmentDate).toLocaleTimeString("en-US")} 
+                    <span style={{ fontWeight: 'bold' }}>Time: </span>
+                    {new Date(row.appointmentDate).toLocaleTimeString("en-US")}
                   </div>
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   {
                     isEditing && editingIdx === idx
                       ? <FormControl className={classes.formControl}>
-                          <Select
-                            value={state || row.state}
-                            onChange={(e) => setState(e.target.value)}
-                            displayEmpty
-                            className={classes.selectEmpty}
-                            inputProps={{ 'aria-label': 'Without label' }}
-                          >
-                            <MenuItem value={'pending'}>Pending</MenuItem>
-                            <MenuItem value={'done'}>Done</MenuItem>
-                            <MenuItem value={'noted'}>Noted</MenuItem>
-                            <MenuItem value={'waitingForReview'}>Waiting For Review</MenuItem>
-                          </Select>
-                        </FormControl>
+                        <Select
+                          value={state || row.state}
+                          onChange={(e) => setState(e.target.value)}
+                          displayEmpty
+                          className={classes.selectEmpty}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                          <MenuItem value={'pending'}>Pending</MenuItem>
+                          <MenuItem value={'done'}>Done</MenuItem>
+                          <MenuItem value={'noted'}>Noted</MenuItem>
+                          <MenuItem value={'waitingForReview'}>Waiting For Review</MenuItem>
+                        </Select>
+                      </FormControl>
                       : row.state
                   }
                 </StyledTableCell>
@@ -170,18 +170,18 @@ export default function DataTable({ apiData, forceUpdate }) {
                 <StyledTableCell align="right">
                   {
                     (isEditing && editingIdx === idx)
-                    ? <div>
+                      ? <div>
                         <ClearIcon
-                          style={{cursor: 'pointer', color: 'red', marginRight: 7}}
+                          style={{ cursor: 'pointer', color: 'red', marginRight: 7 }}
                           onClick={() => handleClose()}
                         />
                         <CheckIcon
-                          style={{cursor: 'pointer', color: 'green'}}
+                          style={{ cursor: 'pointer', color: 'green' }}
                           onClick={() => handleSubmit(row.id)}
                         />
                       </div>
-                    : <EditIcon
-                        style={{cursor: 'pointer'}}
+                      : <EditIcon
+                        style={{ cursor: 'pointer' }}
                         onClick={() => editButtonHandler(row.state, idx)}
                       />
                   }
@@ -191,9 +191,9 @@ export default function DataTable({ apiData, forceUpdate }) {
                 </StyledTableCell> */}
               </StyledTableRow>
             ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }

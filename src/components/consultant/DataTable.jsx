@@ -36,25 +36,25 @@ export default function MediaCard({ apiData, designations, forceUpdate }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const handleDelete = async (id) => {
     setIsLoading(true);
 
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-        const response = await axios.delete('/api/consultent', {
-            headers: {Authorization: token},
-            data: {
-                id
-            }
-        });
-
-        if (response) {
-          setIsLoading(false);
-          alert('Deleted Successfully');
-          forceUpdate();
+      const response = await axios.delete('/consultent', {
+        headers: { Authorization: token },
+        data: {
+          id
         }
+      });
+
+      if (response) {
+        setIsLoading(false);
+        alert('Deleted Successfully');
+        forceUpdate();
+      }
     } catch (err) {
       setIsLoading(false);
       alert(err.response.data.message || 'Something went wrong');
@@ -63,66 +63,66 @@ export default function MediaCard({ apiData, designations, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <AddForm designations={designations} forceUpdate={forceUpdate} />
-    <div className={classes.consultantContainer}>
-      {
-        apiData.map((data, idx) => (
-          <Card key={idx} className={classes.root}>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image={data.image || Avatar}
-                title="Consultant"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {data.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  <Typography variant="h6" color='textPrimary' style={{fontSize: 16, display: 'inline-block'}}>
-                    Designation:
+      <Loader open={isLoading} />
+      <AddForm designations={designations} forceUpdate={forceUpdate} />
+      <div className={classes.consultantContainer}>
+        {
+          apiData.map((data, idx) => (
+            <Card key={idx} className={classes.root}>
+              <CardActionArea>
+                <CardMedia
+                  className={classes.media}
+                  image={data.image || Avatar}
+                  title="Consultant"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {data.name}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
+                      Designation:
                   </Typography> {data.designation} <br />
 
-                  <Typography variant="h6" color='textPrimary' style={{fontSize: 16, display: 'inline-block'}}>
-                    Visiting Day:
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
+                      Visiting Day:
                   </Typography> {data.visitingDay} <br />
 
-                  <Typography variant="h6" color='textPrimary' style={{fontSize: 16, display: 'inline-block'}}>
-                    Review:
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
+                      Review:
                   </Typography> {data.review} <br />
 
-                  <Typography variant="h6" color='textPrimary' style={{fontSize: 16, display: 'inline-block'}}>
-                    Review Count:
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
+                      Review Count:
                   </Typography> {data.reviewCount} <br />
 
-                  <Typography variant="h6" color='textPrimary' style={{fontSize: 16, display: 'inline-block',}}>
-                    Description:
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block', }}>
+                      Description:
                   </Typography> {
-                            data.description.length > 50
-                              ? <>
-                                  {`${data.description.slice(0, 49)}...`}
-                                  <FullDescription description={data.description} />
-                                </>
-                              : data.description
-                          }
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Button
-                size="small"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                onClick={() => handleDelete(data._id)}
-              >
-                Delete
+                      data.description.length > 50
+                        ? <>
+                          {`${data.description.slice(0, 49)}...`}
+                          <FullDescription description={data.description} />
+                        </>
+                        : data.description
+                    }
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Button
+                  size="small"
+                  color="secondary"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => handleDelete(data._id)}
+                >
+                  Delete
               </Button>
-            </CardActions>
-          </Card>
-        ))
-      }
-    </div>
+              </CardActions>
+            </Card>
+          ))
+        }
+      </div>
     </>
   );
 }

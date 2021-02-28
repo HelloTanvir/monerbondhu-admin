@@ -19,8 +19,8 @@ const Music = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/api/music', {
-                    headers: {Authorization: token}
+                const response = await axios.get('/music', {
+                    headers: { Authorization: token }
                 });
 
                 if (response) setIsLoading(false);
@@ -41,10 +41,10 @@ const Music = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <DataTable apiData={apiData} forceUpdate={forceUpdate} />
+            <Loader open={isLoading} />
+            <DataTable apiData={apiData} forceUpdate={forceUpdate} />
         </>
-      );
+    );
 }
 
 export default Music;

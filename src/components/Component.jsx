@@ -11,7 +11,7 @@ import Products from "./products/Products";
 import TipsAndTricks from "./tipsAndTrics/TipsAndTricks";
 
 const Component = () => {
-    const {name} = useParams();
+    const { name } = useParams();
     if (name === 'appointment') return <Appointment />
     else if (name === 'designation') return <Designation />
     else if (name === 'consultant') return <Consultant />

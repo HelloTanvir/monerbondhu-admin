@@ -51,25 +51,25 @@ export default function DataTable({ apiData, forceUpdate }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const handleDelete = async (id) => {
     setIsLoading(true);
 
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-        const response = await axios.delete('/api/consultent/designation', {
-            headers: {Authorization: token},
-            data: {
-                id
-            }
-        });
-
-        if (response) {
-          setIsLoading(false);
-          alert('Deleted Successfully');
-          forceUpdate();
+      const response = await axios.delete('/consultent/designation', {
+        headers: { Authorization: token },
+        data: {
+          id
         }
+      });
+
+      if (response) {
+        setIsLoading(false);
+        alert('Deleted Successfully');
+        forceUpdate();
+      }
     } catch (err) {
       setIsLoading(false);
       alert(err.response.data.message || 'Something went wrong');
@@ -80,36 +80,36 @@ export default function DataTable({ apiData, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <AddForm forceUpdate={forceUpdate} />
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Designation</StyledTableCell>
-            <StyledTableCell align="right">Delete</StyledTableCell>
-          </TableRow>
-        </TableHead>
+      <Loader open={isLoading} />
+      <AddForm forceUpdate={forceUpdate} />
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Designation</StyledTableCell>
+              <StyledTableCell align="right">Delete</StyledTableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {rows.map((row, idx) => (
-            <StyledTableRow key={idx}>
-              <StyledTableCell component="th" scope="row">
-                {row.designation}
-              </StyledTableCell>
-              
-              <StyledTableCell align="right">
-                <DeleteForeverIcon
-                  color='secondary'
-                  style={{cursor: 'pointer'}}
-                  onClick={() => handleDelete(row.id)}
-                />
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <TableBody>
+            {rows.map((row, idx) => (
+              <StyledTableRow key={idx}>
+                <StyledTableCell component="th" scope="row">
+                  {row.designation}
+                </StyledTableCell>
+
+                <StyledTableCell align="right">
+                  <DeleteForeverIcon
+                    color='secondary'
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleDelete(row.id)}
+                  />
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }

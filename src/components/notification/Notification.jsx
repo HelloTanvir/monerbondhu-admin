@@ -21,7 +21,7 @@ export default function Notification() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!titile || !body || !notificationType)
       return alert('Please fillup the form');
 
@@ -30,7 +30,7 @@ export default function Notification() {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = await axios.post('/api/fcm', {titile, body}, {
+      const response = await axios.post('/fcm', { titile, body }, {
         headers: {
           Authorization: token
         },
@@ -49,7 +49,7 @@ export default function Notification() {
       }
     } catch (err) {
       setIsLoading(false);
-      
+
       setTitile('');
       setBody('');
       setNotificationType('');
@@ -60,73 +60,73 @@ export default function Notification() {
 
   return (
     <>
-        <Loader open={isLoading} />
-        <Dialog
-            open
-            aria-labelledby="form-dialog-title"
-            style={{zIndex: -1}}
-            BackdropProps={{
-                style: {
-                    backgroundColor: '#F3F4F6',
-                    boxShadow: 'none',
-                },
-            }}
-            PaperProps={{
-                style: {
-                    // backgroundColor: 'transparent',
-                    boxShadow: 'none',
-                },
-            }}
-        >
-            <DialogTitle id="form-dialog-title">Send Notification</DialogTitle>
-            <DialogContent>
-            <DialogContentText>
-                Please fill up the form...
+      <Loader open={isLoading} />
+      <Dialog
+        open
+        aria-labelledby="form-dialog-title"
+        style={{ zIndex: -1 }}
+        BackdropProps={{
+          style: {
+            backgroundColor: '#F3F4F6',
+            boxShadow: 'none',
+          },
+        }}
+        PaperProps={{
+          style: {
+            // backgroundColor: 'transparent',
+            boxShadow: 'none',
+          },
+        }}
+      >
+        <DialogTitle id="form-dialog-title">Send Notification</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please fill up the form...
             </DialogContentText>
-            <TextField
-                autoFocus
-                margin="dense"
-                id="title"
-                label="Title"
-                fullWidth
-                value={titile}
-                onChange={e => setTitile(e.target.value)}
-            />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="title"
+            label="Title"
+            fullWidth
+            value={titile}
+            onChange={e => setTitile(e.target.value)}
+          />
 
-            <TextField
-                autoFocus
-                margin="dense"
-                id="body"
-                label="Body"
-                multiline
-                fullWidth
-                value={body}
-                onChange={e => setBody(e.target.value)}
-            />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="body"
+            label="Body"
+            multiline
+            fullWidth
+            value={body}
+            onChange={e => setBody(e.target.value)}
+          />
 
-            <FormControl fullWidth>
-                <InputLabel id="demo-controlled-open-select-label">Notification Type</InputLabel>
-                <Select
-                labelId="demo-controlled-open-select-label"
-                id="demo-controlled-open-select"
-                open={openSelect}
-                onClose={() => setOpenSelect(false)}
-                onOpen={() => setOpenSelect(true)}
-                value={notificationType}
-                onChange={e => setNotificationType(e.target.value)}
-                >
-                {
-                    ['all', 'free', 'paid'].map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)
-                }
-                </Select>
-            </FormControl>
-            </DialogContent>
-            <DialogActions>
-            <Button onClick={handleSubmit} color="primary" endIcon={<NotificationsIcon />}>
-                Send
+          <FormControl fullWidth>
+            <InputLabel id="demo-controlled-open-select-label">Notification Type</InputLabel>
+            <Select
+              labelId="demo-controlled-open-select-label"
+              id="demo-controlled-open-select"
+              open={openSelect}
+              onClose={() => setOpenSelect(false)}
+              onOpen={() => setOpenSelect(true)}
+              value={notificationType}
+              onChange={e => setNotificationType(e.target.value)}
+            >
+              {
+                ['all', 'free', 'paid'].map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)
+              }
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSubmit} color="primary" endIcon={<NotificationsIcon />}>
+            Send
             </Button>
-            </DialogActions>
-        </Dialog>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

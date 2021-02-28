@@ -19,8 +19,8 @@ const Appointment = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/api/consultent/appointment', {
-                    headers: {Authorization: token}
+                const response = await axios.get('/consultent/appointment', {
+                    headers: { Authorization: token }
                 });
 
                 if (response) setIsLoading(false);
@@ -36,10 +36,10 @@ const Appointment = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <DataTable apiData={apiData} forceUpdate={forceUpdate} />
+            <Loader open={isLoading} />
+            <DataTable apiData={apiData} forceUpdate={forceUpdate} />
         </>
-      );
+    );
 }
 
 export default Appointment;

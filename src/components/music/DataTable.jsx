@@ -52,25 +52,25 @@ export default function DataTable({ apiData, forceUpdate }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const handleDelete = async (id) => {
     setIsLoading(true);
 
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-        const response = await axios.delete('/api/music', {
-            headers: {Authorization: token},
-            data: {
-                id
-            }
-        });
-
-        if (response) {
-          setIsLoading(false);
-          alert('Deleted Successfully');
-          forceUpdate();
+      const response = await axios.delete('/music', {
+        headers: { Authorization: token },
+        data: {
+          id
         }
+      });
+
+      if (response) {
+        setIsLoading(false);
+        alert('Deleted Successfully');
+        forceUpdate();
+      }
     } catch (err) {
       setIsLoading(false);
       alert(err.response.data.message || 'Something went wrong');
@@ -79,51 +79,51 @@ export default function DataTable({ apiData, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <AddForm forceUpdate={forceUpdate} />
-    {
-      Object.keys(apiData).map((category) => {
-        if (!apiData[category].length) return null;
-        
-        const rows = apiData[category].map((data) => createData(data._id, data.image, data.category, data.subType, data.name, data.mp3, data.musicKey));
+      <Loader open={isLoading} />
+      <AddForm forceUpdate={forceUpdate} />
+      {
+        Object.keys(apiData).map((category) => {
+          if (!apiData[category].length) return null;
 
-        return (
-          <TableContainer component={Paper} key={category} style={{marginBottom: 50}}>
-            <Table className={classes.table} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>{category.toUpperCase()}</StyledTableCell>
-                  <StyledTableCell align="right">Delete</StyledTableCell>
-                </TableRow>
-              </TableHead>
+          const rows = apiData[category].map((data) => createData(data._id, data.image, data.category, data.subType, data.name, data.mp3, data.musicKey));
 
-              <TableBody>
-                {rows.map((row, idx) => (
-                  <StyledTableRow key={idx}>
-                    <StyledTableCell component="th" scope="row">
-                      <MusicCard
-                        image={row.image}
-                        subType={row.subType}
-                        name={row.name}
-                        mp3={row.mp3}
-                      />
-                    </StyledTableCell>
-                    
-                    <StyledTableCell align="right">
-                      <DeleteForeverIcon
-                        color='secondary'
-                        style={{cursor: 'pointer'}}
-                        onClick={() => handleDelete(row.id)}
-                      />
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )
-      })
-    }
+          return (
+            <TableContainer component={Paper} key={category} style={{ marginBottom: 50 }}>
+              <Table className={classes.table} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>{category.toUpperCase()}</StyledTableCell>
+                    <StyledTableCell align="right">Delete</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {rows.map((row, idx) => (
+                    <StyledTableRow key={idx}>
+                      <StyledTableCell component="th" scope="row">
+                        <MusicCard
+                          image={row.image}
+                          subType={row.subType}
+                          name={row.name}
+                          mp3={row.mp3}
+                        />
+                      </StyledTableCell>
+
+                      <StyledTableCell align="right">
+                        <DeleteForeverIcon
+                          color='secondary'
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => handleDelete(row.id)}
+                        />
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )
+        })
+      }
     </>
   );
 }

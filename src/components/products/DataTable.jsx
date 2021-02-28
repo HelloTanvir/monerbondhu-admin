@@ -72,8 +72,8 @@ export default function MediaCard({ apiData, forceUpdate }) {
 
     const token = `Bearer ${localStorage.getItem('token')}`;
     try {
-      const response = axios.patch('/api/shop', {id, dis, price, name}, {
-        headers: {Authorization: token}
+      const response = axios.patch('/shop', { id, dis, price, name }, {
+        headers: { Authorization: token }
       });
 
       if (response) {
@@ -93,25 +93,25 @@ export default function MediaCard({ apiData, forceUpdate }) {
       alert(err.response.data.message || 'Something went wrong');
     }
   };
-  
+
   const handleDelete = async (id) => {
     setIsLoading(true);
 
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-        const response = await axios.delete('/api/shop', {
-            headers: {Authorization: token},
-            data: {
-                id
-            }
-        });
-
-        if (response) {
-          setIsLoading(false);
-          alert('Deleted Successfully');
-          forceUpdate();
+      const response = await axios.delete('/shop', {
+        headers: { Authorization: token },
+        data: {
+          id
         }
+      });
+
+      if (response) {
+        setIsLoading(false);
+        alert('Deleted Successfully');
+        forceUpdate();
+      }
     } catch (err) {
       setIsLoading(false);
       alert(err.response.data.message || 'Something went wrong');
@@ -120,61 +120,61 @@ export default function MediaCard({ apiData, forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <AddForm forceUpdate={forceUpdate} />
-    <div className={classes.consultantContainer}>
-      {
-        apiData.map((data, idx) => (
-          <Card key={idx} className={classes.root}>
-            <CardActionArea style={{cursor: 'auto'}}>
-              <CardMedia
-                className={classes.media}
-                image={data.image || Avatar}
-                title="Product"
-              />
-              
-              <CardContent>
+      <Loader open={isLoading} />
+      <AddForm forceUpdate={forceUpdate} />
+      <div className={classes.consultantContainer}>
+        {
+          apiData.map((data, idx) => (
+            <Card key={idx} className={classes.root}>
+              <CardActionArea style={{ cursor: 'auto' }}>
+                <CardMedia
+                  className={classes.media}
+                  image={data.image || Avatar}
+                  title="Product"
+                />
+
+                <CardContent>
                   {
                     (isEditing && editingIdx === idx)
                       ? <TextField
-                          id="name"
-                          label="Name"
-                          variant="outlined"
-                          fullWidth
-                          value={name}
-                          onChange={e => setName(e.target.value)}
-                        />
+                        id="name"
+                        label="Name"
+                        variant="outlined"
+                        fullWidth
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                      />
                       : <Typography gutterBottom variant="h5" component="h2">
-                          {data.name}
-                        </Typography>
+                        {data.name}
+                      </Typography>
                   }
 
-                <Typography>
-                  {
-                    (isEditing && editingIdx === idx)
-                      ? <TextField
+                  <Typography>
+                    {
+                      (isEditing && editingIdx === idx)
+                        ? <TextField
                           id="price"
                           label="Price"
                           variant="outlined"
-                          style={{margin: '8px 0'}}
+                          style={{ margin: '8px 0' }}
                           fullWidth
                           value={price}
                           onChange={e => setPrice(e.target.value)}
                         />
-                      : <>
+                        : <>
                           <Typography
                             variant="h6"
                             color='textPrimary'
-                            style={{fontSize: 16, display: 'inline-block',}}
+                            style={{ fontSize: 16, display: 'inline-block', }}
                           >
                             Price:
                           </Typography> {data.price} <br />
                         </>
-                  }
+                    }
 
-                  {
-                    (isEditing && editingIdx === idx)
-                      ? <TextField
+                    {
+                      (isEditing && editingIdx === idx)
+                        ? <TextField
                           id="description"
                           label="Description"
                           variant="outlined"
@@ -183,62 +183,62 @@ export default function MediaCard({ apiData, forceUpdate }) {
                           value={dis}
                           onChange={e => setDis(e.target.value)}
                         />
-                      : <>
+                        : <>
                           <Typography
                             variant="h6"
                             color='textPrimary'
-                            style={{fontSize: 16, display: 'inline-block',}}
+                            style={{ fontSize: 16, display: 'inline-block', }}
                           >
                             Description:
                           </Typography> {
                             data.dis.length > 50
                               ? <>
-                                  {`${data.dis.slice(0, 49)}...`}
-                                  <FullContent content={data.dis} />
-                                </>
+                                {`${data.dis.slice(0, 49)}...`}
+                                <FullContent content={data.dis} />
+                              </>
                               : data.dis
                           }
                         </>
-                  }
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions style={{display: 'flex', justifyContent: 'space-between'}}>
-              <Button
-                size="small"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                onClick={() => handleDelete(data._id)}
-              >
-                Delete
+                    }
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                  size="small"
+                  color="secondary"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => handleDelete(data._id)}
+                >
+                  Delete
               </Button>
 
-              {
-                isEditing && editingIdx === idx
-                ? <div>
-                    <ClearIcon
-                      style={{cursor: 'pointer', color: 'red', marginRight: 7}}
-                      onClick={() => handleClose()}
-                    />
-                    <CheckIcon
-                      style={{cursor: 'pointer', color: 'green'}}
-                      onClick={() => handleEdit(data._id)}
-                    />
-                  </div>
-                : <Button
-                    size="small"
-                    color="primary"
-                    startIcon={<EditIcon />}
-                    onClick={() => editButtonHandler(data.name, data.price, data.dis, idx)}
-                  >
-                    edit
+                {
+                  isEditing && editingIdx === idx
+                    ? <div>
+                      <ClearIcon
+                        style={{ cursor: 'pointer', color: 'red', marginRight: 7 }}
+                        onClick={() => handleClose()}
+                      />
+                      <CheckIcon
+                        style={{ cursor: 'pointer', color: 'green' }}
+                        onClick={() => handleEdit(data._id)}
+                      />
+                    </div>
+                    : <Button
+                      size="small"
+                      color="primary"
+                      startIcon={<EditIcon />}
+                      onClick={() => editButtonHandler(data.name, data.price, data.dis, idx)}
+                    >
+                      edit
                   </Button>
-              }
-            </CardActions>
-          </Card>
-        ))
-      }
-    </div>
+                }
+              </CardActions>
+            </Card>
+          ))
+        }
+      </div>
     </>
   );
 }

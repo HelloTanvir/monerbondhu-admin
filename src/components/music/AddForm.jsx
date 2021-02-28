@@ -67,24 +67,24 @@ export default function AddForm({ forceUpdate }) {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-        const response = await axios.post('/api/music', bodyFormData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: token
-            }
-        });
-
-        if (response) {
-          setIsLoading(false);
-          
-          setName('');
-          setCategory('');
-          setSubType('');
-          setImage(null);
-          setMusic(null);
-
-          forceUpdate();
+      const response = await axios.post('/music', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: token
         }
+      });
+
+      if (response) {
+        setIsLoading(false);
+
+        setName('');
+        setCategory('');
+        setSubType('');
+        setImage(null);
+        setMusic(null);
+
+        forceUpdate();
+      }
     } catch (err) {
       setIsLoading(false);
 
@@ -100,123 +100,123 @@ export default function AddForm({ forceUpdate }) {
 
   return (
     <>
-    <Loader open={isLoading} />
-    <div style={{display: 'flex', justifyContent: 'flex-end', paddingBottom: 22}}>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        create new music
+      <Loader open={isLoading} />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: 22 }}>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          create new music
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Create New Music</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please fill up the form...
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Create New Music</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please fill up the form...
           </DialogContentText>
 
-          <TextField
-            autoFocus
-            margin="dense"
-            name="name"
-            label="Name"
-            fullWidth
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-
-          <FormControl fullWidth>
-            <InputLabel id="demo-controlled-open-select-label">Category</InputLabel>
-            <Select
-              labelId="demo-controlled-open-select-label"
-              id="demo-controlled-open-select"
-              open={openCategory}
-              onClose={() => setOpenCategory(false)}
-              onOpen={() => setOpenCategory(true)}
-              value={category}
-              onChange={e => setCategory(e.target.value)}
-            >
-              {
-                ['meditation', 'music', 'stress', 'sleep'].map((category, idx) => <MenuItem key={idx} value={category}>{category}</MenuItem>)
-              }
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth style={{marginBottom: 36}}>
-            <InputLabel id="demo-controlled-open-select-label-2">Sub Type</InputLabel>
-            <Select
-              labelId="demo-controlled-open-select-label-2"
-              id="demo-controlled-open-select-2"
-              open={openSubType}
-              onClose={() => setOpenSubType(false)}
-              onOpen={() => setOpenSubType(true)}
-              value={subType}
-              onChange={e => setSubType(e.target.value)}
-            >
-              {
-                ['free', 'paid'].map((subType, idx) => <MenuItem key={idx} value={subType}>{subType}</MenuItem>)
-              }
-            </Select>
-          </FormControl>
-
-          <span>
-            <input
-              color="primary"
-              accept="image/*"
-              type="file"
-              onChange={e => setImage(e.target.files[0])}
-              id="icon-button-file"
-              hidden
+            <TextField
+              autoFocus
+              margin="dense"
+              name="name"
+              label="Name"
+              fullWidth
+              value={name}
+              onChange={e => setName(e.target.value)}
             />
-            <label htmlFor="icon-button-file">
-              <Button
-                variant="contained"
-                component="span"
-                className={classes.button}
-                size="large"
-                fullWidth
+
+            <FormControl fullWidth>
+              <InputLabel id="demo-controlled-open-select-label">Category</InputLabel>
+              <Select
+                labelId="demo-controlled-open-select-label"
+                id="demo-controlled-open-select"
+                open={openCategory}
+                onClose={() => setOpenCategory(false)}
+                onOpen={() => setOpenCategory(true)}
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+              >
+                {
+                  ['meditation', 'music', 'stress', 'sleep'].map((category, idx) => <MenuItem key={idx} value={category}>{category}</MenuItem>)
+                }
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth style={{ marginBottom: 36 }}>
+              <InputLabel id="demo-controlled-open-select-label-2">Sub Type</InputLabel>
+              <Select
+                labelId="demo-controlled-open-select-label-2"
+                id="demo-controlled-open-select-2"
+                open={openSubType}
+                onClose={() => setOpenSubType(false)}
+                onOpen={() => setOpenSubType(true)}
+                value={subType}
+                onChange={e => setSubType(e.target.value)}
+              >
+                {
+                  ['free', 'paid'].map((subType, idx) => <MenuItem key={idx} value={subType}>{subType}</MenuItem>)
+                }
+              </Select>
+            </FormControl>
+
+            <span>
+              <input
                 color="primary"
-                endIcon={<ImageIcon />}
-                style={{textTransform: 'capitalize', margin: 'unset'}}
-              >
-                Image
+                accept="image/*"
+                type="file"
+                onChange={e => setImage(e.target.files[0])}
+                id="icon-button-file"
+                hidden
+              />
+              <label htmlFor="icon-button-file">
+                <Button
+                  variant="contained"
+                  component="span"
+                  className={classes.button}
+                  size="large"
+                  fullWidth
+                  color="primary"
+                  endIcon={<ImageIcon />}
+                  style={{ textTransform: 'capitalize', margin: 'unset' }}
+                >
+                  Image
               </Button>
-            </label>
-          </span>
+              </label>
+            </span>
 
-          <div style={{marginTop: 10}}>
-            <input
-              color="primary"
-              accept='audio/*'
-              type="file"
-              onChange={e => setMusic(e.target.files[0])}
-              id="icon-button-file-2"
-              hidden
-            />
-            <label htmlFor="icon-button-file-2">
-              <Button
-                variant="contained"
-                component="span"
-                className={classes.button}
-                size="large"
-                fullWidth
-                color='secondary'
-                endIcon={<MusicNoteIcon />}
-                style={{textTransform: 'capitalize', margin: 'unset'}}
-              >
-                Music
+            <div style={{ marginTop: 10 }}>
+              <input
+                color="primary"
+                accept='audio/*'
+                type="file"
+                onChange={e => setMusic(e.target.files[0])}
+                id="icon-button-file-2"
+                hidden
+              />
+              <label htmlFor="icon-button-file-2">
+                <Button
+                  variant="contained"
+                  component="span"
+                  className={classes.button}
+                  size="large"
+                  fullWidth
+                  color='secondary'
+                  endIcon={<MusicNoteIcon />}
+                  style={{ textTransform: 'capitalize', margin: 'unset' }}
+                >
+                  Music
               </Button>
-            </label>
-          </div>
-          
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+              </label>
+            </div>
+
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Submit
+            <Button onClick={handleSubmit} color="primary">
+              Submit
           </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+          </DialogActions>
+        </Dialog>
+      </div>
     </>
   );
 }

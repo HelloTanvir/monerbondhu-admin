@@ -19,8 +19,8 @@ const LightExercise = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/api/lightexercise', {
-                    headers: {Authorization: token}
+                const response = await axios.get('/lightexercise', {
+                    headers: { Authorization: token }
                 });
 
                 if (response) setIsLoading(false);
@@ -36,10 +36,10 @@ const LightExercise = () => {
 
     return (
         <>
-        <Loader open={isLoading} />
-        <DataTable apiData={apiData} forceUpdate={forceUpdate} />
+            <Loader open={isLoading} />
+            <DataTable apiData={apiData} forceUpdate={forceUpdate} />
         </>
-      );
+    );
 }
 
 export default LightExercise;
