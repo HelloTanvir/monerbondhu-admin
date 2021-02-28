@@ -7,9 +7,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
-import axios from 'axios';
 import React, { useState } from 'react';
 import Avatar from '../../assets/Avatar.jpg';
+import { axios } from '../../axios';
 import Loader from '../Loader';
 import AddForm from './AddForm';
 

@@ -10,9 +10,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Axios from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { axios } from '../../axios';
 import Loader from '../Loader';
 import Classes from './Login.module.css';
 
@@ -82,7 +82,7 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-            const response = await Axios.post('/admin/login', {
+            const response = await axios.post('/admin/login', {
                 username: state.username,
                 password: state.password
             });

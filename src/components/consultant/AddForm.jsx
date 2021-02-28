@@ -7,8 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import ImageIcon from '@material-ui/icons/Image';
-import axios from 'axios';
 import React, { useState } from 'react';
+import { axios } from '../../axios';
 import Loader from '../Loader';
 
 const useStyles = makeStyles((theme) => ({

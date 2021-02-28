@@ -10,8 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
-import axios from 'axios';
 import React, { useState } from 'react';
+import { axios } from '../../axios';
 import Loader from '../Loader';
 import OrderedProduct from './OrderedProduct';
 

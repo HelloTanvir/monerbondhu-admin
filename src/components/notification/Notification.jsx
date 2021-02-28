@@ -7,8 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import axios from 'axios';
 import React, { useState } from 'react';
+import { axios } from '../../axios';
 import Loader from '../Loader';
 
 export default function Notification() {
