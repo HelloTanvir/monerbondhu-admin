@@ -1,10 +1,8 @@
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -58,33 +56,20 @@ const Login = () => {
 
     const classes = useStyles();
 
-    const [state, setState] = useState({
-        username: '',
-        password: '',
-        remember: false
-    });
-
-    const changeHandler = e => {
-        if (e.target.name === 'remember') return setState({
-            ...state,
-            remember: !state.remember
-        });
-
-        setState({
-            ...state,
-            [e.target.name]: e.target.value
-        });
-    }
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const submitHandler = async (e) => {
         e.preventDefault();
+
+        if (!username || !password) return alert('Please provide username and password');
 
         setIsLoading(true);
 
         try {
             const response = await axios.post('/admin/login', {
-                username: state.username,
-                password: state.password
+                username,
+                password
             });
 
             if (response) {
@@ -96,9 +81,10 @@ const Login = () => {
 
             history.push('/dashboard');
         } catch (err) {
-            setErrorMsg(err.response.data.message);
+            console.log(err);
+            setErrorMsg(err?.response?.data?.message ?? 'Something went wrong');
             setIsLoading(false);
-            alert(err.response.data.message || 'Something went wrong');
+            // alert(err?.response?.data?.message ?? 'Something went wrong');
         }
     }
 
@@ -124,8 +110,8 @@ const Login = () => {
                             label="User Name"
                             name="username"
                             autoFocus
-                            value={state.username}
-                            onChange={changeHandler}
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
                         />
                         {
                             !!errorMsg ? <div className={Classes.error_msg}>{errorMsg}</div> : ''
@@ -140,23 +126,12 @@ const Login = () => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            value={state.password}
-                            onChange={changeHandler}
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
                         />
                         {
                             !!errorMsg ? <div className={Classes.error_msg}>{errorMsg}</div> : ''
                         }
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    color="primary"
-                                    name="remember"
-                                    onChange={changeHandler}
-                                    checked={state.remember}
-                                />
-                            }
-                            label="Remember me"
-                        />
                         <Button
                             type="submit"
                             fullWidth
