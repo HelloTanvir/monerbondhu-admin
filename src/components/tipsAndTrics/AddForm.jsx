@@ -10,6 +10,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import React, { useState } from 'react';
 import { axios } from '../../axios';
 import Loader from '../Loader';
+import RichTextEditor from './RichTextEditor';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -101,7 +102,13 @@ export default function AddForm({ forceUpdate }) {
         <Button variant="outlined" color="primary" onClick={handleClickOpen}>
           create new tips & tricks
       </Button>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth='xs'>
+        <Dialog
+          fullWidth
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="form-dialog-title"
+          maxWidth='md'
+        >
           <DialogTitle id="form-dialog-title">Create New Tips & Tricks</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -139,9 +146,10 @@ export default function AddForm({ forceUpdate }) {
               value={videoLink}
               disabled={!isVideo}
               onChange={e => setVideoLink(e.target.value)}
+              style={{ marginBottom: 36 }}
             />
 
-            <TextField
+            {/* <TextField
               autoFocus
               margin="dense"
               name="content"
@@ -151,9 +159,11 @@ export default function AddForm({ forceUpdate }) {
               value={content}
               style={{ marginBottom: 36 }}
               onChange={e => setContent(e.target.value)}
-            />
+            /> */}
+            
+            <RichTextEditor text={content} setText={setContent} />
 
-            <span>
+            <span style={{ display: 'inline-block', width: '100%', marginTop: 36 }}>
               <input
                 color="primary"
                 accept="image/*"

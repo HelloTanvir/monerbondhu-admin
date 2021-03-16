@@ -85,7 +85,7 @@ export default function AddForm({ forceUpdate }) {
       setDis('');
       setImage(null);
 
-      alert(err.response.data.message || 'Something went wrong');
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 

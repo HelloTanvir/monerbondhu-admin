@@ -61,7 +61,7 @@ export default function AddForm({ forceUpdate }) {
       setName('');
       setYtlink('');
 
-      alert(err.response.data.message || 'Something went wrong');
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 

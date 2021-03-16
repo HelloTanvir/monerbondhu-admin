@@ -90,7 +90,7 @@ export default function MediaCard({ apiData, forceUpdate }) {
       setName('');
       setPrice('');
       setDis('');
-      alert(err.response.data.message || 'Something went wrong');
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 

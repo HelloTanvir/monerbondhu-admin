@@ -94,7 +94,7 @@ export default function AddForm({ forceUpdate }) {
       setImage(null);
       setMusic(null);
 
-      alert(err.response.data.message || 'Something went wrong');
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 

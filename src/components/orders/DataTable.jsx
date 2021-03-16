@@ -1,4 +1,4 @@
-import { FormControl, MenuItem, Select } from '@material-ui/core';
+import { FormControl, MenuItem, Select, TextField } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -48,6 +48,11 @@ const useStyles = makeStyles(theme => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  textField: {
+    '& > *': {
+      fontSize: 13
+    }
+  }
 }));
 
 export default function DataTable({ apiData, forceUpdate }) {
@@ -57,6 +62,13 @@ export default function DataTable({ apiData, forceUpdate }) {
   const [editingIdx, setEditingIdx] = useState(-1);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [name, setName] = useState('');
+  const [givenNumber, setGivenNumber] = useState(null);
+  const [address, setAddress] = useState('');
+  const [qty, setQty] = useState('');
+  const [userNumber, setUserNumber] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState('');
   const [orderStatus, setOrderStatus] = useState('');
 
   const handleClose = () => {
@@ -65,39 +77,76 @@ export default function DataTable({ apiData, forceUpdate }) {
     setOrderStatus('');
   };
 
-  const editButtonHandler = (editedOrderStatus, idx) => {
+  const editButtonHandler = (nm, gvnNum, adrs, qty, usrNum, payMthd, paySts, ordrSts, idx) => {
     setIsEditing(true);
     setEditingIdx(idx);
-    setOrderStatus(editedOrderStatus);
+
+    setName(nm);
+    setGivenNumber(gvnNum);
+    setAddress(adrs);
+    setQty(qty);
+    setUserNumber(usrNum);
+    setPaymentMethod(payMthd);
+    setPaymentStatus(paySts);
+    setOrderStatus(ordrSts);
   }
 
   const handleSubmit = async (id) => {
-    if (!orderStatus) return alert('Please select a state');
+    if (!name || !givenNumber || !address || !qty || !userNumber || !paymentMethod || !paymentStatus || !orderStatus)
+      return alert('Please select a state');
 
     setIsEditing(false);
     setEditingIdx(-1);
     setIsLoading(true);
 
+    const updateData = {
+      name,
+      givenNumber,
+      address,
+      qty,
+      userNumber,
+      paymentMethod,
+      paymentStatus,
+      orderStatus,
+    };
+
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = axios.patch('/shop/order', { id, orderStatus }, {
+      const response = axios.patch(`/shop/order/${id}`, updateData, {
         headers: { Authorization: token }
       });
 
       if (response) {
         setIsLoading(false);
         forceUpdate();
+
+        setName('');
+        setGivenNumber(null);
+        setAddress('');
+        setQty('');
+        setUserNumber(null);
+        setPaymentMethod('');
+        setPaymentStatus('');
         setOrderStatus('');
       }
     } catch (err) {
       setIsLoading(false);
+
+      setName('');
+      setGivenNumber(null);
+      setAddress('');
+      setQty('');
+      setUserNumber(null);
+      setPaymentMethod('');
+      setPaymentStatus('');
       setOrderStatus('');
-      alert(err.response.data.message || 'Something went wrong');
+
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 
-  const rows = apiData.map((data, idx) => createData(data._id, data.name, data.givenNumber, data.address, data.paymentMethod, data.paymentStatus, data.orderStatus, data.orderTime, data.qty, data.userNumber, data.product));
+  const rows = apiData.map((data, idx) => createData(data._id, data.name, data.givenNumber, data.address, data.paymentMethod.toLowerCase(), data.paymentStatus.toLowerCase(), data.orderStatus.toLowerCase(), data.orderTime, data.qty, data.userNumber, data.product));
 
   return (
     <>
@@ -129,33 +178,102 @@ export default function DataTable({ apiData, forceUpdate }) {
                   <OrderedProduct product={row.product} />
                 </StyledTableCell>
 
-                <StyledTableCell align="right">{row.name}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {
+                    isEditing && editingIdx === idx
+                      ? <TextField
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className={classes.textField}
+                        />
+                      : row.name
+                  }
+                </StyledTableCell>
 
-                <StyledTableCell align="right">{row.givenNumber}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {
+                    isEditing && editingIdx === idx
+                      ? <TextField
+                          value={givenNumber}
+                          onChange={(e) => setGivenNumber(e.target.value)}
+                          className={classes.textField}
+                          type='tel'
+                        />
+                      : row.givenNumber
+                  }
+                </StyledTableCell>
 
-                <StyledTableCell align="right">{row.address}</StyledTableCell>
-
-                <StyledTableCell align="right">{row.paymentMethod}</StyledTableCell>
-
-                <StyledTableCell align="right">{row.paymentStatus}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {
+                    isEditing && editingIdx === idx
+                      ? <TextField
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          className={classes.textField}
+                        />
+                      : row.address
+                  }
+                </StyledTableCell>
 
                 <StyledTableCell align="right">
                   {
                     isEditing && editingIdx === idx
                       ? <FormControl className={classes.formControl}>
-                        <Select
-                          value={orderStatus || row.orderStatus}
-                          onChange={(e) => setOrderStatus(e.target.value)}
-                          displayEmpty
-                          className={classes.selectEmpty}
-                          inputProps={{ 'aria-label': 'Without label' }}
-                        >
-                          {
-                            ['pending', 'picked', 'shipped', 'delivered', 'cancelled']
-                              .map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)
-                          }
-                        </Select>
-                      </FormControl>
+                          <Select
+                            value={paymentMethod}
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                            inputProps={{ 'aria-label': 'Without label' }}
+                          >
+                            {
+                              ['online', 'cod']
+                                .map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)
+                            }
+                          </Select>
+                        </FormControl>
+                      : row.paymentMethod
+                  }
+                </StyledTableCell>
+
+                <StyledTableCell align="right">
+                  {
+                    isEditing && editingIdx === idx
+                      ? <FormControl className={classes.formControl}>
+                          <Select
+                            value={paymentStatus}
+                            onChange={(e) => setPaymentStatus(e.target.value)}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                            inputProps={{ 'aria-label': 'Without label' }}
+                          >
+                            {
+                              ['paid', 'unpaid']
+                                .map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)
+                            }
+                          </Select>
+                        </FormControl>
+                      : row.paymentStatus
+                  }
+                </StyledTableCell>
+
+                <StyledTableCell align="right">
+                  {
+                    isEditing && editingIdx === idx
+                      ? <FormControl className={classes.formControl}>
+                          <Select
+                            value={orderStatus}
+                            onChange={(e) => setOrderStatus(e.target.value)}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                            inputProps={{ 'aria-label': 'Without label' }}
+                          >
+                            {
+                              ['pending', 'picked', 'shipped', 'delivered', 'cancelled']
+                                .map(i => <MenuItem key={i} value={i}>{i}</MenuItem>)
+                            }
+                          </Select>
+                        </FormControl>
                       : row.orderStatus
                   }
                 </StyledTableCell>
@@ -169,9 +287,30 @@ export default function DataTable({ apiData, forceUpdate }) {
                   </div>
                 </StyledTableCell>
 
-                <StyledTableCell align="right">{row.quantity}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {
+                    isEditing && editingIdx === idx
+                      ? <TextField
+                          value={qty}
+                          onChange={(e) => setQty(e.target.value)}
+                          className={classes.textField}
+                        />
+                      : row.quantity
+                  }
+                </StyledTableCell>
 
-                <StyledTableCell align="right">{row.userNumber}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {
+                    isEditing && editingIdx === idx
+                      ? <TextField
+                          value={userNumber}
+                          onChange={(e) => setUserNumber(e.target.value)}
+                          className={classes.textField}
+                          type='tel'
+                        />
+                      : row.userNumber
+                  }
+                </StyledTableCell>
 
                 <StyledTableCell align="right">
                   {
@@ -188,7 +327,7 @@ export default function DataTable({ apiData, forceUpdate }) {
                       </div>
                       : <EditIcon
                         style={{ cursor: 'pointer' }}
-                        onClick={() => editButtonHandler(row.orderStatus, idx)}
+                        onClick={() => editButtonHandler(row.name, row.givenNumber, row.address, row.quantity, row.userNumber, row.paymentMethod, row.paymentStatus, row.orderStatus, idx)}
                       />
                   }
                 </StyledTableCell>

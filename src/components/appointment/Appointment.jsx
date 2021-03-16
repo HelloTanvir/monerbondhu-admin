@@ -28,7 +28,7 @@ const Appointment = () => {
                 setApiData(response.data);
             } catch (err) {
                 setIsLoading(false);
-                alert(err.response.data.message || 'Something went wrong');
+                alert(err?.response?.data?.message ?? 'Something went wrong');
             }
         }
         apiResponse();

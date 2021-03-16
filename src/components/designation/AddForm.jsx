@@ -49,7 +49,7 @@ export default function AddForm({ forceUpdate }) {
     } catch (err) {
       setIsLoading(false);
       setDesignation('');
-      alert(err.response.data.message || 'Something went wrong');
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 

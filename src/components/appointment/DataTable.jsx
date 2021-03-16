@@ -97,7 +97,7 @@ export default function DataTable({ apiData, forceUpdate }) {
     } catch (err) {
       setIsLoading(false);
       setState('');
-      alert(err.response.data.message || 'Something went wrong');
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 

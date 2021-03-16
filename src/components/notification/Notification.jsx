@@ -54,7 +54,7 @@ export default function Notification() {
       setBody('');
       setNotificationType('');
 
-      alert(err.response.data.message || 'Something went wrong');
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 

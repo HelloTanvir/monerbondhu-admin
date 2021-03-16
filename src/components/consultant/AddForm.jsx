@@ -95,7 +95,7 @@ export default function AddForm({ designations, forceUpdate }) {
       setDesignation('');
       setImage(null);
 
-      alert(err.response.data.message || 'Something went wrong');
+      alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
 
