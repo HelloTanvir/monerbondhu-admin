@@ -100,23 +100,27 @@ export default function MediaCard({ apiData, designations, forceUpdate }) {
                   <Typography variant="body2" color="textSecondary" component="p">
                     <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
                       Designation:
-                  </Typography> {data.designation} <br />
+                    </Typography> {data.designation} <br />
+
+                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
+                      Fee:
+                    </Typography> {data.fee} <br />
 
                     <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
                       Visiting Day:
-                  </Typography> {data.visitingDay} <br />
+                    </Typography> {data.visitingDay} <br />
 
                     <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
                       Review:
-                  </Typography> {data.review} <br />
+                    </Typography> {data.review} <br />
 
                     <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
                       Review Count:
-                  </Typography> {data.reviewCount} <br />
+                    </Typography> {data.reviewCount} <br />
 
                     <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block', }}>
                       Description:
-                  </Typography> {
+                    </Typography> {
                     data.description.length > 35
                     ? <>
                         <div
@@ -150,6 +154,7 @@ export default function MediaCard({ apiData, designations, forceUpdate }) {
                     id: data._id,
                     name: data.name,
                     designation: data.designation,
+                    fee: data.fee,
                     visitingDay: data.visitingDay,
                     description: data.description,
                   }}

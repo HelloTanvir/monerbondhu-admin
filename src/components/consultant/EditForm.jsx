@@ -17,6 +17,7 @@ export default function EditForm({ forceUpdate, currentData }) {
 
   const [name, setName] = useState('');
   const [designation, setDesignation] = useState('');
+  const [fee, setFee] = useState(null);
   const [visitingDay, setVisitingDay] = useState('');
   const [description, setDescription] = useState('');
 
@@ -29,6 +30,7 @@ export default function EditForm({ forceUpdate, currentData }) {
 
     setName('');
     setDesignation('');
+    setFee(null);
     setVisitingDay('');
     setDescription('');
   };
@@ -38,12 +40,13 @@ export default function EditForm({ forceUpdate, currentData }) {
 
     setName(currentData.name);
     setDesignation(currentData.designation);
+    setFee(currentData.fee);
     setVisitingDay(currentData.visitingDay);
     setDescription(currentData.description);
   }
 
   const handleEdit = async id => {
-    if (!name || !designation || !visitingDay || !description)
+    if (!name || !designation || !fee || !visitingDay || !description)
       return alert('Please fillup the form');
 
     setOpen(false);
@@ -52,6 +55,7 @@ export default function EditForm({ forceUpdate, currentData }) {
     const updateData = {
       name,
       designation,
+      fee,
       visitingDay,
       description
     }
@@ -68,6 +72,7 @@ export default function EditForm({ forceUpdate, currentData }) {
 
         setName('');
         setDesignation('');
+        setFee(null);
         setVisitingDay('');
         setDescription('');
 
@@ -78,6 +83,7 @@ export default function EditForm({ forceUpdate, currentData }) {
 
       setName('');
       setDesignation('');
+      setFee(null);
       setVisitingDay('');
       setDescription('');
 
@@ -126,6 +132,17 @@ export default function EditForm({ forceUpdate, currentData }) {
               fullWidth
               value={designation}
               onChange={e => setDesignation(e.target.value)}
+              // style={{ marginBottom: 15 }}
+            />
+
+            <TextField
+              autoFocus
+              margin="dense"
+              name="fee"
+              label="Fee"
+              fullWidth
+              value={fee}
+              onChange={e => setFee(e.target.value)}
               // style={{ marginBottom: 15 }}
             />
 

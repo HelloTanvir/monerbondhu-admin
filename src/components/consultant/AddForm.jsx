@@ -27,6 +27,7 @@ export default function AddForm({ designations, forceUpdate }) {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [fee, setFee] = useState(null);
   const [visitingDay, setVisitingDay] = useState('');
   const [visitingTime, setVisitingTime] = useState('');
   const [designation, setDesignation] = useState('');
@@ -41,6 +42,7 @@ export default function AddForm({ designations, forceUpdate }) {
 
     setName('');
     setDescription('');
+    setFee(null);
     setVisitingDay('');
     setVisitingTime('');
     setDesignation('');
@@ -50,7 +52,8 @@ export default function AddForm({ designations, forceUpdate }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !description || !visitingDay || !visitingTime || !designation || !image) return alert('Please fillup the form');
+    if (!name || !description || !fee || !visitingDay || !visitingTime || !designation || !image)
+         return alert('Please fillup the form');
 
     setOpen(false);
 
@@ -59,6 +62,7 @@ export default function AddForm({ designations, forceUpdate }) {
     const bodyFormData = new FormData();
     bodyFormData.append('name', name);
     bodyFormData.append('description', description);
+    bodyFormData.append('fee', fee);
     bodyFormData.append('visitingDay', visitingDay);
     bodyFormData.append('time', visitingTime);
     bodyFormData.append('designation', designation);
@@ -78,6 +82,7 @@ export default function AddForm({ designations, forceUpdate }) {
 
         setName('');
         setDescription('');
+        setFee(null);
         setVisitingDay('');
         setVisitingTime('');
         setDesignation('');
@@ -90,6 +95,7 @@ export default function AddForm({ designations, forceUpdate }) {
 
       setName('');
       setDescription('');
+      setFee(null);
       setVisitingDay('');
       setVisitingTime('');
       setDesignation('');
@@ -139,6 +145,18 @@ export default function AddForm({ designations, forceUpdate }) {
                 }
               </Select>
             </FormControl>
+
+            <TextField
+              autoFocus
+              type='number'
+              InputProps={{ inputProps: { min: 0 } }}
+              margin="dense"
+              name="fee"
+              label="Fee"
+              fullWidth
+              value={fee}
+              onChange={e => setFee(e.target.value)}
+            />
 
             <TextField
               autoFocus
