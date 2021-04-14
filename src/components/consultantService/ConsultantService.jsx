@@ -1,11 +1,9 @@
-import { Divider } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { axios } from '../../axios';
-import ConsultantService from '../consultantService/ConsultantService';
 import Loader from '../Loader';
 import DataTable from './DataTable';
 
-const Designation = () => {
+const ConsultantService = () => {
     const [apiData, setApiData] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +19,7 @@ const Designation = () => {
             setIsLoading(true);
 
             try {
-                const response = await axios.get('/consultent/designation', {
+                const response = await axios.get('/consultent/service', {
                     headers: { Authorization: token }
                 });
 
@@ -40,10 +38,8 @@ const Designation = () => {
         <>
             <Loader open={isLoading} />
             <DataTable apiData={apiData} forceUpdate={forceUpdate} />
-            <Divider style={{margin: '50px 0', height: 2}} />
-            <ConsultantService />
         </>
     );
 }
 
-export default Designation;
+export default ConsultantService;

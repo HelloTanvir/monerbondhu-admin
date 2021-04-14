@@ -180,19 +180,19 @@ export default function Dashboard() {
             </ListItem>
             <Collapse in={openConsultant} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <Link to={`${url}/appointment`}>
+                <Link to={`${url}/appointments`}>
                     <ListItem button className={[classes.nested, classes.listItem, location.pathname.includes('appointment') && classes.active].join(' ')}>
                       <ListItemText primary='Appointments' />
                     </ListItem>
                   </Link>
 
-                  <Link to={`${url}/designation`}>
+                  <Link to={`${url}/designations and services`}>
                     <ListItem button className={[classes.nested, classes.listItem, location.pathname.includes('designation') && classes.active].join(' ')}>
-                      <ListItemText primary='Designations' />
+                      <ListItemText primary='Designations & Services' />
                     </ListItem>
                   </Link>
 
-                  <Link to={`${url}/consultant`}>
+                  <Link to={`${url}/consultants`}>
                     <ListItem button className={[classes.nested, classes.listItem, location.pathname.includes('consultant') && classes.active].join(' ')}>
                       <ListItemText primary='All Consultants' />
                     </ListItem>
@@ -200,21 +200,21 @@ export default function Dashboard() {
               </List>
             </Collapse>
 
-            <Link to={`${url}/tips`}>
+            <Link to={`${url}/tips and tricks`}>
               <ListItem button className={[classes.listItem, location.pathname.includes('tips') && classes.active].join(' ')}>
                 <ListItemText primary='Tips & Tricks' />
               </ListItem>
             </Link>
 
-            <Link to={`${url}/video`}>
+            <Link to={`${url}/pin videos`}>
               <ListItem button className={[classes.listItem, location.pathname.includes('video') && classes.active].join(' ')}>
-                <ListItemText primary='Pin Video' />
+                <ListItemText primary='Pin Videos' />
               </ListItem>
             </Link>
 
-            <Link to={`${url}/exercise`}>
+            <Link to={`${url}/light exercises`}>
               <ListItem button className={[classes.listItem, location.pathname.includes('exercise') && classes.active].join(' ')}>
-                <ListItemText primary='Light Exercise' />
+                <ListItemText primary='Light Exercises' />
               </ListItem>
             </Link>
 
@@ -231,12 +231,12 @@ export default function Dashboard() {
             <Collapse in={openShop} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <Link to={`${url}/product`}>
-                  <ListItem button className={[classes.nested, classes.listItem, location.pathname.includes('product') && classes.active].join(' ')}>
+                  <ListItem button className={[classes.nested, classes.listItem, location.pathname.includes('products') && classes.active].join(' ')}>
                     <ListItemText primary='Products' />
                   </ListItem>
                 </Link>
 
-                <Link to={`${url}/order`}>
+                <Link to={`${url}/orders`}>
                   <ListItem button className={[classes.nested, classes.listItem, location.pathname.includes('order') && classes.active].join(' ')}>
                     <ListItemText primary='Orders' />
                   </ListItem>

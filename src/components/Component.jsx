@@ -12,15 +12,15 @@ import TipsAndTricks from "./tipsAndTrics/TipsAndTricks";
 
 const Component = () => {
     const { name } = useParams();
-    if (name === 'appointment') return <Appointment />
-    else if (name === 'designation') return <Designation />
-    else if (name === 'consultant') return <Consultant />
-    else if (name === 'tips') return <TipsAndTricks />
-    else if (name === 'video') return <PinVideo />
-    else if (name === 'exercise') return <LightExercise />
+    if (name === 'appointments') return <Appointment />
+    else if (name === 'designations and services') return <Designation />
+    else if (name === 'consultants') return <Consultant />
+    else if (name === 'tips and tricks') return <TipsAndTricks />
+    else if (name === 'pin videos') return <PinVideo />
+    else if (name === 'light exercises') return <LightExercise />
     else if (name === 'music') return <Music />
-    else if (name === 'product') return <Products />
-    else if (name === 'order') return <Orders />
+    else if (name === 'products') return <Products />
+    else if (name === 'orders') return <Orders />
     else if (name === 'notification') return <Notification />
     else return <h1>Page not found.....</h1>
 }

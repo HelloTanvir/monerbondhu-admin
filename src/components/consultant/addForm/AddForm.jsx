@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
+import { FormControl, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -6,10 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
 import React, { useState } from 'react';
-import { axios } from '../../axios';
-import Loader from '../Loader';
+import { axios } from '../../../axios';
+import Loader from '../../Loader';
+import SelectService from './SelectService';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -17,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddForm({ designations, forceUpdate }) {
+export default function AddForm({ designations, serviceOptions, forceUpdate }) {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -27,11 +29,11 @@ export default function AddForm({ designations, forceUpdate }) {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [fee, setFee] = useState(null);
   const [visitingDay, setVisitingDay] = useState('');
   const [visitingTime, setVisitingTime] = useState('');
   const [designation, setDesignation] = useState('');
   const [image, setImage] = useState(null);
+  const [services, setServices] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,17 +44,27 @@ export default function AddForm({ designations, forceUpdate }) {
 
     setName('');
     setDescription('');
-    setFee(null);
+    setServices([]);
     setVisitingDay('');
     setVisitingTime('');
     setDesignation('');
     setImage(null);
   };
 
+  const handleServiceRemove = (idx) => {
+    setServices(prev => {
+      const prevService = [...prev];
+      prevService.splice(idx, 1);
+      return [...prevService];
+    });
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !description || !fee || !visitingDay || !visitingTime || !designation || !image)
+    console.log(services);
+
+    if (!name || !description || !services.length || !visitingDay || !visitingTime || !designation || !image)
          return alert('Please fillup the form');
 
     setOpen(false);
@@ -62,11 +74,11 @@ export default function AddForm({ designations, forceUpdate }) {
     const bodyFormData = new FormData();
     bodyFormData.append('name', name);
     bodyFormData.append('description', description);
-    bodyFormData.append('fee', fee);
     bodyFormData.append('visitingDay', visitingDay);
     bodyFormData.append('time', visitingTime);
     bodyFormData.append('designation', designation);
     bodyFormData.append('image', image);
+    bodyFormData.append('services', JSON.stringify(services));
 
     const token = `Bearer ${localStorage.getItem('token')}`;
 
@@ -82,7 +94,7 @@ export default function AddForm({ designations, forceUpdate }) {
 
         setName('');
         setDescription('');
-        setFee(null);
+        setServices([]);
         setVisitingDay('');
         setVisitingTime('');
         setDesignation('');
@@ -95,7 +107,7 @@ export default function AddForm({ designations, forceUpdate }) {
 
       setName('');
       setDescription('');
-      setFee(null);
+      setServices([]);
       setVisitingDay('');
       setVisitingTime('');
       setDesignation('');
@@ -148,18 +160,6 @@ export default function AddForm({ designations, forceUpdate }) {
 
             <TextField
               autoFocus
-              type='number'
-              InputProps={{ inputProps: { min: 0 } }}
-              margin="dense"
-              name="fee"
-              label="Fee"
-              fullWidth
-              value={fee}
-              onChange={e => setFee(e.target.value)}
-            />
-
-            <TextField
-              autoFocus
               margin="dense"
               name="visitingDay"
               label="Visiting Day"
@@ -186,11 +186,44 @@ export default function AddForm({ designations, forceUpdate }) {
               multiline
               fullWidth
               value={description}
-              style={{ marginBottom: 36 }}
               onChange={e => setDescription(e.target.value)}
             />
 
-            <span>
+            <SelectService
+              serviceOptions={serviceOptions}
+              services={services}
+              setServices={setServices}
+            />
+
+            <Typography>
+              {
+                services.map((service, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      margin: '7px 0'
+                    }}
+                  >
+                    <div>
+                      {
+                        `${service.name} - ${service.mode} - ${service.duration} - ${service.fee}`
+                      }
+                    </div>
+                    <DeleteIcon
+                      color='secondary'
+                      fontSize='small'
+                      style={{cursor: 'pointer'}}
+                      onClick={() => handleServiceRemove(index)}
+                    />
+                  </div>
+                ))
+              }
+            </Typography>
+
+            <span style={{ display: 'block', marginTop: 15 }}>
               <input
                 color="primary"
                 accept="image/*"

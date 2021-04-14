@@ -12,9 +12,10 @@ import React, { useState } from 'react';
 import Avatar from '../../assets/Avatar.jpg';
 import { axios } from '../../axios';
 import Loader from '../Loader';
-import AddForm from './AddForm';
+import AddForm from './addForm/AddForm';
 import EditForm from './EditForm';
 import FullDescription from './FullDescription';
+import ShowService from './ShowService';
 
 const useStyles = makeStyles({
   root: {
@@ -24,6 +25,9 @@ const useStyles = makeStyles({
   },
   media: {
     height: 250,
+  },
+  table: {
+    minWidth: 700,
   },
   consultantContainer: {
     display: 'grid',
@@ -50,7 +54,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function MediaCard({ apiData, designations, forceUpdate }) {
+export default function MediaCard({ apiData, designations, services, forceUpdate }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +86,11 @@ export default function MediaCard({ apiData, designations, forceUpdate }) {
   return (
     <>
       <Loader open={isLoading} />
-      <AddForm designations={designations} forceUpdate={forceUpdate} />
+      <AddForm
+        designations={designations}
+        serviceOptions={services}
+        forceUpdate={forceUpdate}
+      />
       <div className={classes.consultantContainer}>
         {
           apiData.map((data, idx) => (
@@ -101,10 +109,6 @@ export default function MediaCard({ apiData, designations, forceUpdate }) {
                     <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
                       Designation:
                     </Typography> {data.designation} <br />
-
-                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
-                      Fee:
-                    </Typography> {data.fee} <br />
 
                     <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
                       Visiting Day:
@@ -136,6 +140,8 @@ export default function MediaCard({ apiData, designations, forceUpdate }) {
                         {parse(data.description)}
                       </div>
                   }
+                  
+                  <ShowService services={data.service} />
                   </Typography>
                 </CardContent>
               </CardActionArea>

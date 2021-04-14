@@ -6,6 +6,7 @@ import DataTable from './DataTable';
 const Consultant = () => {
     const [apiData, setApiData] = useState([]);
     const [designations, setDesignations] = useState([]);
+    const [services, setServices] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -29,6 +30,7 @@ const Consultant = () => {
 
                 setApiData(response.data.data);
                 setDesignations(response.data.designations);
+                setServices(response.data.services);
             } catch (err) {
                 setIsLoading(false);
                 alert(err?.response?.data?.message ?? 'Something went wrong');
@@ -40,7 +42,12 @@ const Consultant = () => {
     return (
         <>
             <Loader open={isLoading} />
-            <DataTable apiData={apiData} designations={designations} forceUpdate={forceUpdate} />
+            <DataTable
+                apiData={apiData}
+                designations={designations}
+                services={services}
+                forceUpdate={forceUpdate}
+            />
         </>
     );
 }
