@@ -10,7 +10,6 @@ const Consultant = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    // these two will force component to update
     const [update, setUpdate] = useState(0);
 
     const forceUpdate = () => setUpdate(i => i + 1);

@@ -51,9 +51,10 @@ export default function ShowService({ services }) {
   return (
     <div>
       <Button
-        variant="text"
         color="primary"
-        style={{paddingLeft: 0, paddingRight: 0}}
+        size='small'
+        variant='text'
+        style={{paddingLeft: 0, paddingRight: 0, textTransform: 'none'}}
         onClick={handleClickOpen}
       >
         See all services
@@ -76,7 +77,7 @@ export default function ShowService({ services }) {
                     <TableHead>
                     <TableRow>
                         <StyledTableCell>Name</StyledTableCell>
-                        <StyledTableCell align="right">Fee</StyledTableCell>
+                        <StyledTableCell>Fee</StyledTableCell>
                         <StyledTableCell align="right">Mode</StyledTableCell>
                         <StyledTableCell align="right">Duration</StyledTableCell>
                     </TableRow>
@@ -87,7 +88,7 @@ export default function ShowService({ services }) {
                         <StyledTableCell component="th" scope="row">
                             {service.name}
                         </StyledTableCell>
-                        <StyledTableCell align="right">{service.fee}</StyledTableCell>
+                        <StyledTableCell>{service.fee}</StyledTableCell>
                         <StyledTableCell align="right">{service.mode}</StyledTableCell>
                         <StyledTableCell align="right">{service.duration}</StyledTableCell>
                         </StyledTableRow>

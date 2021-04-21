@@ -88,7 +88,8 @@ export default function SelectService({ serviceOptions, services, setServices })
       <Button
         variant="text"
         color="primary"
-        style={{paddingLeft: 0, marginTop: 10}}
+        size='medium'
+        style={{paddingLeft: 0, marginTop: 10, textTransform: 'none'}}
         onClick={handleClickOpen}
       >
         {`Add ${services.length === 0 ? 'a' : 'another'} service`}

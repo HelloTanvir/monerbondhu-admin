@@ -13,6 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import React, { useState } from 'react';
 import { axios } from '../../axios';
 import Loader from '../Loader';
+import FullStory from './FullStory';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -32,8 +33,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(id, name, number, consultant, appointmentDate, state, story, dob) {
-  return { id, name, number, consultant, appointmentDate, state, story, dob };
+function createData(id, name, number, consultant, service, appointmentDate, state, story, dob) {
+  return { id, name, number, consultant, service, appointmentDate, state, story, dob };
 }
 
 const useStyles = makeStyles(theme => ({
@@ -47,6 +48,22 @@ const useStyles = makeStyles(theme => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  content: {
+    width: 85,
+    maxWidth: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    '& > *': {
+      maxWidth: '100%',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      boxSizing: 'border-box',
+      margin: 0,
+      padding: 0
+    }
+  }
 }));
 
 export default function DataTable({ apiData, forceUpdate }) {
@@ -101,7 +118,7 @@ export default function DataTable({ apiData, forceUpdate }) {
     }
   };
 
-  const rows = apiData.map((data, idx) => createData(data._id, data.name, data.givenMobileNumber, data.consultantName, data.appointmentDate, data.state, data.story, data.dob));
+  const rows = apiData.map((data, idx) => createData(data._id, data.name, data.givenMobileNumber, data.consultantName, data.service, data.appointmentDate, data.state, data.story, data.dob));
 
   return (
     <>
@@ -111,13 +128,14 @@ export default function DataTable({ apiData, forceUpdate }) {
           <TableHead>
             <TableRow>
               <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell align="right">Number</StyledTableCell>
-              <StyledTableCell align="right">Consultant</StyledTableCell>
-              <StyledTableCell align="right">Appointment Date</StyledTableCell>
-              <StyledTableCell align="right">State</StyledTableCell>
-              <StyledTableCell align="right">Story</StyledTableCell>
-              <StyledTableCell align="right">Age</StyledTableCell>
-              <StyledTableCell align="right">Date of birth</StyledTableCell>
+              <StyledTableCell align="left">Number</StyledTableCell>
+              <StyledTableCell align="left">Consultant</StyledTableCell>
+              <StyledTableCell align="left">Service</StyledTableCell>
+              <StyledTableCell align="left">Appointment Date</StyledTableCell>
+              <StyledTableCell align="left">State</StyledTableCell>
+              <StyledTableCell align="left">Story</StyledTableCell>
+              <StyledTableCell align="left">Age</StyledTableCell>
+              <StyledTableCell align="left">Date of birth</StyledTableCell>
               <StyledTableCell align="right">Edit</StyledTableCell>
               {/* <StyledTableCell align="right">Delete</StyledTableCell> */}
             </TableRow>
@@ -129,9 +147,10 @@ export default function DataTable({ apiData, forceUpdate }) {
                 <StyledTableCell component="th" scope="row">
                   {row.name}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.consultant}</StyledTableCell>
-                <StyledTableCell align="right">{row.consultant}</StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="left">{row.number}</StyledTableCell>
+                <StyledTableCell align="left">{row.consultant}</StyledTableCell>
+                <StyledTableCell align="left">{row.service}</StyledTableCell>
+                <StyledTableCell align="left">
                   <span style={{ fontWeight: 'bold' }}>Date: </span>
                   {new Date(row.appointmentDate).toLocaleDateString("en-US")}
                   <div>
@@ -139,7 +158,7 @@ export default function DataTable({ apiData, forceUpdate }) {
                     {new Date(row.appointmentDate).toLocaleTimeString("en-US")}
                   </div>
                 </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="left">
                   {
                     isEditing && editingIdx === idx
                       ? <FormControl className={classes.formControl}>
@@ -159,12 +178,29 @@ export default function DataTable({ apiData, forceUpdate }) {
                       : row.state
                   }
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.story}</StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="left">
+                  {
+                    row.story.length > 12
+                        ? <>
+                            <div
+                              className={classes.content}
+                            >
+                              {row.story}
+                            </div>
+                            <FullStory story={row.story} />
+                          </>
+                        : <div
+                            className={classes.content}
+                          >
+                            {row.story}
+                          </div>
+                  }
+                </StyledTableCell>
+                <StyledTableCell align="left">
                   {/* {new Date(Date.now()).getFullYear() - new Date(row.dob).getFullYear()} years */}
                   {calcAge(row.dob)} years
                 </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell align="left">
                   {new Date(row.dob).toLocaleDateString("en-US")}
                 </StyledTableCell>
                 <StyledTableCell align="right">

@@ -315,7 +315,7 @@ export default function DataTable({ apiData, forceUpdate }) {
                 <StyledTableCell align="right">
                   {
                     (isEditing && editingIdx === idx)
-                      ? <div>
+                      ? <div style={{display: 'flex', alignItems: 'center'}}>
                         <ClearIcon
                           style={{ cursor: 'pointer', color: 'red', marginRight: 7 }}
                           onClick={() => handleClose()}
