@@ -230,7 +230,7 @@ export default function Dashboard() {
             </ListItem>
             <Collapse in={openShop} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <Link to={`${url}/product`}>
+                <Link to={`${url}/products`}>
                   <ListItem button className={[classes.nested, classes.listItem, location.pathname.includes('products') && classes.active].join(' ')}>
                     <ListItemText primary='Products' />
                   </ListItem>
@@ -247,6 +247,24 @@ export default function Dashboard() {
             <Link to={`${url}/notification`}>
               <ListItem button className={[classes.listItem, location.pathname.includes('notification') && classes.active].join(' ')}>
                 <ListItemText primary='Send Notification' />
+              </ListItem>
+            </Link>
+
+            <Link to={`${url}/faq`}>
+              <ListItem button className={[classes.listItem, location.pathname.includes('faq') && classes.active].join(' ')}>
+                <ListItemText primary='FAQ' />
+              </ListItem>
+            </Link>
+
+            <Link to={`${url}/terms and conditions`}>
+              <ListItem button className={[classes.listItem, location.pathname.includes('conditions') && classes.active].join(' ')}>
+                <ListItemText primary='Terms and Conditions' />
+              </ListItem>
+            </Link>
+
+            <Link to={`${url}/privacy and policy`}>
+              <ListItem button className={[classes.listItem, location.pathname.includes('policy') && classes.active].join(' ')}>
+                <ListItemText primary='Privacy and Policy' />
               </ListItem>
             </Link>
         </List>

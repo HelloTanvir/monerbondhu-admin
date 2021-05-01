@@ -15,9 +15,9 @@ import parse from 'html-react-parser';
 import React, { useState } from 'react';
 import { axios } from '../../axios';
 import Loader from '../Loader';
+import ShowFullContent from '../utils/ShowFullContent';
 import AddForm from './addForm/AddForm';
 import EditDescription from './EditDescription';
-import FullDescription from './FullDescription';
 import Image from './Image';
 import ShowService from './ShowService';
 
@@ -280,8 +280,9 @@ export default function DataTable({ apiData, designations, services, forceUpdate
                               >
                                 {parse(row.description || '')}
                               </div>
-                              <FullDescription
-                                description={parse(row.description || '')}
+                              <ShowFullContent
+                                title={'Description'}
+                                content={parse(row.description || '')}
                               />
                             </>
                           : <div
@@ -293,7 +294,11 @@ export default function DataTable({ apiData, designations, services, forceUpdate
                 </StyledTableCell>
 
                 <StyledTableCell>
-                  <ShowService services={row.service} />
+                  {
+                    isEditing && editingIdx === idx
+                      ? <ShowService services={row.service} isEditing={true} />
+                      : <ShowService services={row.service} />
+                  }
                 </StyledTableCell>
 
                 <StyledTableCell align="right">

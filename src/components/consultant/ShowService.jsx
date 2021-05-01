@@ -37,7 +37,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-export default function ShowService({ services }) {
+export default function ShowService({ services, isEditing }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -45,8 +45,15 @@ export default function ShowService({ services }) {
   };
 
   const handleClose = () => {
+    if (isEditing) return handleEdit();
+    
     setOpen(false);
   };
+
+  const handleEdit = () => {
+    alert('running');
+    setOpen(false);
+  }
 
   return (
     <div>
@@ -57,7 +64,9 @@ export default function ShowService({ services }) {
         style={{paddingLeft: 0, paddingRight: 0, textTransform: 'none'}}
         onClick={handleClickOpen}
       >
-        See all services
+        {
+          isEditing ? 'Edit' : 'See all services'
+        }
       </Button>
       <Dialog
         open={open}
@@ -101,7 +110,9 @@ export default function ShowService({ services }) {
 
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Close
+            {
+              isEditing ? 'Done' : 'Close'
+            }
           </Button>
         </DialogActions>
       </Dialog>

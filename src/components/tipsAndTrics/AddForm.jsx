@@ -10,7 +10,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import React, { useState } from 'react';
 import { axios } from '../../axios';
 import Loader from '../Loader';
-import RichTextEditor from './RichTextEditor';
+import RichTextEditor from '../utils/RichTextEditor';
 
 const useStyles = makeStyles((theme) => ({
   button: {

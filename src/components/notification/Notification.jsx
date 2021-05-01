@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -11,7 +10,7 @@ import React, { useState } from 'react';
 import { axios } from '../../axios';
 import Loader from '../Loader';
 
-export default function Notification() {
+const Notification = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [openSelect, setOpenSelect] = React.useState(false);
 
@@ -64,7 +63,9 @@ export default function Notification() {
       <Dialog
         open
         aria-labelledby="form-dialog-title"
-        style={{ zIndex: -1 }}
+        // scroll='body'
+        scroll='paper'
+        style={{ zIndex: -1, marginTop: 20 }}
         BackdropProps={{
           style: {
             backgroundColor: '#F3F4F6',
@@ -80,9 +81,6 @@ export default function Notification() {
       >
         <DialogTitle id="form-dialog-title">Send Notification</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please fill up the form...
-            </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -130,3 +128,5 @@ export default function Notification() {
     </>
   );
 }
+
+export default Notification;

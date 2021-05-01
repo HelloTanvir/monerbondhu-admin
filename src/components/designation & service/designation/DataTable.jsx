@@ -8,8 +8,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import React, { useState } from 'react';
-import { axios } from '../../axios';
-import Loader from '../Loader';
+import { axios } from '../../../axios';
+import Loader from '../../Loader';
 import AddForm from './AddForm';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -30,8 +30,8 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(id, service, description) {
-  return { id, service, description };
+function createData(id, designation) {
+  return { id, designation };
 }
 
 const useStyles = makeStyles(theme => ({
@@ -58,7 +58,7 @@ export default function DataTable({ apiData, forceUpdate }) {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = await axios.delete('/consultent/service', {
+      const response = await axios.delete('/consultent/designation', {
         headers: { Authorization: token },
         data: {
           id
@@ -76,7 +76,7 @@ export default function DataTable({ apiData, forceUpdate }) {
     }
   }
 
-  const rows = apiData.map((data, idx) => createData(data._id, data.name, data.dis));
+  const rows = apiData.map((data, idx) => createData(data._id, data.designation));
 
   return (
     <>
@@ -86,8 +86,7 @@ export default function DataTable({ apiData, forceUpdate }) {
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Service</StyledTableCell>
-              <StyledTableCell>Description</StyledTableCell>
+              <StyledTableCell>Designation</StyledTableCell>
               <StyledTableCell align="right">Delete</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -96,11 +95,7 @@ export default function DataTable({ apiData, forceUpdate }) {
             {rows.map((row, idx) => (
               <StyledTableRow key={idx}>
                 <StyledTableCell component="th" scope="row">
-                  {row.service}
-                </StyledTableCell>
-
-                <StyledTableCell component="th" scope="row">
-                  {row.description}
+                  {row.designation}
                 </StyledTableCell>
 
                 <StyledTableCell align="right">

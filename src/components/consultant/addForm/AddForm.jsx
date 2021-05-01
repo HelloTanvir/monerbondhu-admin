@@ -62,8 +62,6 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(services);
-
     if (!name || !description || !services.length || !visitingDay || !visitingTime || !designation || !image)
          return alert('Please fillup the form');
 

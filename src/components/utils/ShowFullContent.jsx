@@ -6,7 +6,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import React from 'react';
 
-export default function FullStory({ story }) {
+export default function ShowFullContent({ title, content }) {
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState('paper');
 
@@ -33,7 +33,7 @@ export default function FullStory({ story }) {
     <div>
       <Button
         color='primary'
-        size='medium'
+        size='small'
         style={{margin: 0, padding: 0, textTransform: 'unset', display: 'inline'}}
         onClick={handleClickOpen('body')}
       >
@@ -46,14 +46,14 @@ export default function FullStory({ story }) {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title">Story</DialogTitle>
+        <DialogTitle id="scroll-dialog-title">{title}</DialogTitle>
         <DialogContent dividers={scroll === 'paper'}>
           <DialogContentText
             id="scroll-dialog-description"
             ref={descriptionElementRef}
             tabIndex={-1}
           >
-            {story}
+            {content}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

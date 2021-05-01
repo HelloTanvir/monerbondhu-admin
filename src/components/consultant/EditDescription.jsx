@@ -1,5 +1,3 @@
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,6 +6,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import React from 'react';
+import RichTextEditor from '../utils/RichTextEditor';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -69,23 +68,3 @@ const EditDescription = ({ description, setDescription }) => {
 }
 
 export default EditDescription;
-
-
-const RichTextEditor = ({ text, setText }) => {
-    const editorConfiguration = {
-        toolbar: [ 'heading', 'bold', 'italic', 'bulletedList', 'numberedList', 'outdent', 'indent', 'blockQuote', 'insertTable', 'undo', 'redo' ]
-    };
-
-    return (
-        <CKEditor
-            editor={ClassicEditor}
-            config={ editorConfiguration }
-            data={text}
-            onChange={(e, editor) => {
-                const data = editor.getData();
-                setText(data);
-            }}
-        />
-    );
-}
-

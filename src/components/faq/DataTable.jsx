@@ -3,13 +3,11 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import parse from 'html-react-parser';
 import React, { useState } from 'react';
-import Avatar from '../../assets/Avatar.jpg';
 import { axios } from '../../axios';
 import Loader from '../Loader';
 import ShowFullContent from '../utils/ShowFullContent';
@@ -28,12 +26,13 @@ const useStyles = makeStyles({
   consultantContainer: {
     display: 'grid',
     justifyContent: 'center',
-    gridTemplateColumns: 'repeat(auto-fit, 250px)',
+    // gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+    gridTemplateColumns: '1fr',
     gridRowGap: 50,
     gridColumnGap: 50,
   },
   content: {
-    height: 20,
+    height: 22,
     maxWidth: '100%',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -61,7 +60,7 @@ export default function MediaCard({ apiData, forceUpdate }) {
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = await axios.delete('/tipsamdtricks', {
+      const response = await axios.delete('/faq', {
         headers: { Authorization: token },
         data: {
           id
@@ -88,70 +87,41 @@ export default function MediaCard({ apiData, forceUpdate }) {
           apiData.map((data, idx) => (
             <Card key={idx} className={classes.root}>
               <CardActionArea>
-                {
-                  data.videoLink
-                    ? <a target="_blank" rel="noreferrer" href={data.videoLink}>
-                      <CardMedia
-                        className={classes.media}
-                        image={data.image || Avatar}
-                        title="Consultant"
-                      />
-                    </a>
-                    : <CardMedia
-                      className={classes.media}
-                      image={data.image || Avatar}
-                      title="Consultant"
-                      onClick={() => alert('This has no video attached')}
-                    />
-                }
-
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
                     {data.title}
                   </Typography>
-
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
-                      Date:
-                    </Typography> {new Date(data.date).toLocaleDateString("en-US")} <br />
-
-                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
-                      Time:
-                    </Typography> {new Date(data.date).toLocaleTimeString("en-US")} <br />
-
-                    <Typography variant="h6" color='textPrimary' style={{ fontSize: 16, display: 'inline-block' }}>
-                      View Count:
-                    </Typography> {data.viewCount} <br />
-
+                  <Typography>
                     <Typography
                       variant="h6"
                       color='textPrimary'
                       style={{ fontSize: 16, display: 'inline-block', }}
                     >
-                      Content:
+                      Answer:
                     </Typography> {
-                      data.content.length > 35
+                      data.body.length > 35
                         ? <>
                             <div
                               className={classes.content}
                             >
-                              {parse(data.content)}
+                              {parse(data.body)}
                             </div>
                             <ShowFullContent
-                              title={'Content'}
-                              content={parse(data.content)}
+                              title={'Answer'}
+                              content={parse(data.body)}
                             />
                           </>
                         : <div
                             className={classes.content}
                           >
-                            {parse(data.content)}
+                            {parse(data.body)}
                           </div>
                     }
 
                   </Typography>
                 </CardContent>
               </CardActionArea>
+              
               <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Button
                   size="small"
@@ -163,7 +133,7 @@ export default function MediaCard({ apiData, forceUpdate }) {
                 </Button>
                 <EditForm
                   forceUpdate={forceUpdate}
-                  currentData={{id: data._id, title: data.title, content: data.content}}
+                  currentData={{id: data._id, title: data.title, body: data.body}}
                 />
               </CardActions>
             </Card>

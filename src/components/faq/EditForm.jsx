@@ -15,8 +15,13 @@ export default function EditForm({ forceUpdate, currentData }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [ques, setQues] = useState('');
+  const [ans, setAns] = useState('');
+
+  const clearAll = () => {
+    setQues('');
+    setAns('');
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,42 +30,45 @@ export default function EditForm({ forceUpdate, currentData }) {
   const handleClose = () => {
     setOpen(false);
 
-    setTitle('');
-    setContent('');
+    clearAll();
   };
 
-  const editButtonHandler = (updatedTitle, updatedContent) => {
+  const editButtonHandler = (updatedQues, updatedAns) => {
     handleClickOpen();
-    setTitle(updatedTitle);
-    setContent(updatedContent);
+
+    setQues(updatedQues);
+    setAns(updatedAns);
   }
 
   const handleEdit = async id => {
-    if (!title || !content) return alert('Please fillup the form');
+    if (!ques || !ans) return alert('Please fillup the form');
 
     setOpen(false);
     setIsLoading(true);
 
+    const reqData = {
+      title: ques,
+      body: ans
+    }
+
     const token = `Bearer ${localStorage.getItem('token')}`;
 
     try {
-      const response = await axios.patch('/tipsamdtricks', { id, title, content }, {
+      const response = await axios.put(`/faq/${id}`, reqData, {
         headers: { Authorization: token }
       });
 
       if (response) {
         setIsLoading(false);
 
-        setTitle('');
-        setContent('');
+        clearAll();
 
         forceUpdate();
       }
     } catch (err) {
       setIsLoading(false);
 
-      setTitle('');
-      setContent('');
+      clearAll();
 
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
@@ -74,7 +82,7 @@ export default function EditForm({ forceUpdate, currentData }) {
             size="small"
             color="primary"
             startIcon={<EditIcon />}
-            onClick={() => editButtonHandler(currentData.title, currentData.content)}
+            onClick={() => editButtonHandler(currentData.title, currentData.body)}
         >
             edit
         </Button>
@@ -85,33 +93,21 @@ export default function EditForm({ forceUpdate, currentData }) {
           aria-labelledby="form-dialog-title"
           maxWidth='md'
         >
-          <DialogTitle id="form-dialog-title">Update This Tips & Tricks</DialogTitle>
+          <DialogTitle id="form-dialog-title">Update This FAQ</DialogTitle>
           <DialogContent>
 
             <TextField
               autoFocus
               margin="dense"
-              name="title"
-              label="Title"
+              name="ques"
+              label="Question"
               fullWidth
-              value={title}
-              onChange={e => setTitle(e.target.value)}
+              value={ques}
+              onChange={e => setQues(e.target.value)}
               style={{ marginBottom: 15 }}
             />
 
-            {/* <TextField
-              autoFocus
-              margin="dense"
-              name="content"
-              label="Content"
-              multiline
-              fullWidth
-              value={content}
-              style={{ marginBottom: 36 }}
-              onChange={e => setContent(e.target.value)}
-            /> */}
-
-            <RichTextEditor text={content} setText={setContent} />
+            <RichTextEditor text={ans} setText={setAns} />
 
           </DialogContent>
           <DialogActions>

@@ -3,9 +3,8 @@ import { axios } from '../../axios';
 import Loader from '../Loader';
 import DataTable from './DataTable';
 
-const Appointment = () => {
+const FAQ = () => {
     const [apiData, setApiData] = useState([]);
-    const [consultants, setConsultants] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -20,18 +19,13 @@ const Appointment = () => {
             setIsLoading(true);
 
             try {
-                const response1 = await axios.get('/consultent/appointment', {
+                const response = await axios.get('/faq', {
                     headers: { Authorization: token }
                 });
 
-                const response2 = await axios.get('/consultent', {
-                    headers: { Authorization: token }
-                });
+                if (response) setIsLoading(false);
 
-                if (response1 && response2) setIsLoading(false);
-
-                setApiData(response1.data);
-                setConsultants(response2.data.data);
+                setApiData(response.data.data);
             } catch (err) {
                 setIsLoading(false);
                 alert(err?.response?.data?.message ?? 'Something went wrong');
@@ -43,13 +37,9 @@ const Appointment = () => {
     return (
         <>
             <Loader open={isLoading} />
-            <DataTable
-                apiData={apiData}
-                consultants={consultants}
-                forceUpdate={forceUpdate}
-            />
+            <DataTable apiData={apiData} forceUpdate={forceUpdate} />
         </>
     );
 }
 
-export default Appointment;
+export default FAQ;

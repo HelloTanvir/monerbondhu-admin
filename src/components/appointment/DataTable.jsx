@@ -13,7 +13,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import React, { useState } from 'react';
 import { axios } from '../../axios';
 import Loader from '../Loader';
-import FullStory from './FullStory';
+import ShowFullContent from '../utils/ShowFullContent';
+import AddForm from './AddForm';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -66,7 +67,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function DataTable({ apiData, forceUpdate }) {
+export default function DataTable({ apiData, consultants, forceUpdate }) {
   const classes = useStyles();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -123,6 +124,7 @@ export default function DataTable({ apiData, forceUpdate }) {
   return (
     <>
       <Loader open={isLoading} />
+      <AddForm consultants={consultants} forceUpdate={forceUpdate} />
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
@@ -162,19 +164,19 @@ export default function DataTable({ apiData, forceUpdate }) {
                   {
                     isEditing && editingIdx === idx
                       ? <FormControl className={classes.formControl}>
-                        <Select
-                          value={state || row.state}
-                          onChange={(e) => setState(e.target.value)}
-                          displayEmpty
-                          className={classes.selectEmpty}
-                          inputProps={{ 'aria-label': 'Without label' }}
-                        >
-                          <MenuItem value={'pending'}>Pending</MenuItem>
-                          <MenuItem value={'done'}>Done</MenuItem>
-                          <MenuItem value={'noted'}>Noted</MenuItem>
-                          <MenuItem value={'waitingForReview'}>Waiting For Review</MenuItem>
-                        </Select>
-                      </FormControl>
+                          <Select
+                            value={state || row.state}
+                            onChange={(e) => setState(e.target.value)}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                            inputProps={{ 'aria-label': 'Without label' }}
+                          >
+                            <MenuItem value={'pending'}>Pending</MenuItem>
+                            <MenuItem value={'done'}>Done</MenuItem>
+                            <MenuItem value={'noted'}>Noted</MenuItem>
+                            <MenuItem value={'waitingForReview'}>Waiting For Review</MenuItem>
+                          </Select>
+                        </FormControl>
                       : row.state
                   }
                 </StyledTableCell>
@@ -187,7 +189,7 @@ export default function DataTable({ apiData, forceUpdate }) {
                             >
                               {row.story}
                             </div>
-                            <FullStory story={row.story} />
+                            <ShowFullContent title={'Story'} content={row.story} />
                           </>
                         : <div
                             className={classes.content}
@@ -197,7 +199,6 @@ export default function DataTable({ apiData, forceUpdate }) {
                   }
                 </StyledTableCell>
                 <StyledTableCell align="left">
-                  {/* {new Date(Date.now()).getFullYear() - new Date(row.dob).getFullYear()} years */}
                   {calcAge(row.dob)} years
                 </StyledTableCell>
                 <StyledTableCell align="left">

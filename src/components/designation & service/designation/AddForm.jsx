@@ -6,8 +6,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import React, { useState } from 'react';
-import { axios } from '../../axios';
-import Loader from '../Loader';
+import { axios } from '../../../axios';
+import Loader from '../../Loader';
 
 export default function AddForm({ forceUpdate }) {
   const [open, setOpen] = React.useState(false);
