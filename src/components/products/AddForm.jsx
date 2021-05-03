@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -23,11 +23,20 @@ export default function AddForm({ forceUpdate }) {
   const [open, setOpen] = React.useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [dis, setDis] = useState('');
   const [image, setImage] = useState(null);
+
+  const clearAll = () => {
+    setName('');
+    setPrice('');
+    setDis('');
+    setImage(null);
+    setIsSubmit(false);
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,18 +44,14 @@ export default function AddForm({ forceUpdate }) {
 
   const handleClose = () => {
     setOpen(false);
-
-    setName('');
-    setPrice('');
-    setDis('');
-    setImage(null);
+    clearAll();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmit(true);
 
-    if (!name || !price || !dis || !image)
-      return alert('Please fillup the form');
+    if (!name || !price || !dis || !image) return;
 
     setOpen(false);
 
@@ -70,20 +75,14 @@ export default function AddForm({ forceUpdate }) {
       if (response) {
         setIsLoading(false);
 
-        setName('');
-        setPrice('');
-        setDis('');
-        setImage(null);
+        clearAll();
 
         forceUpdate();
       }
     } catch (err) {
       setIsLoading(false);
 
-      setName('');
-      setPrice('');
-      setDis('');
-      setImage(null);
+      clearAll();
 
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
@@ -105,6 +104,8 @@ export default function AddForm({ forceUpdate }) {
 
             <TextField
               autoFocus
+              error={isSumbit && !name}
+              helperText={(isSumbit && !name) ? 'Please add a name' : ''}
               margin="dense"
               name="name"
               label="Name"
@@ -114,7 +115,8 @@ export default function AddForm({ forceUpdate }) {
             />
 
             <TextField
-              autoFocus
+              error={isSumbit && !price}
+              helperText={(isSumbit && !price) ? 'Please add price' : ''}
               margin="dense"
               name="price"
               label="Price"
@@ -125,7 +127,8 @@ export default function AddForm({ forceUpdate }) {
             />
 
             <TextField
-              autoFocus
+              error={isSumbit && !dis}
+              helperText={(isSumbit && !dis) ? 'Please add a description' : ''}
               margin="dense"
               name="dis"
               label="Description"
@@ -160,6 +163,20 @@ export default function AddForm({ forceUpdate }) {
               </Button>
               </label>
             </span>
+            {
+              isSumbit && !image
+                ? <Typography
+                    color='error'
+                    style={{
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.03333em',
+                      fontWeight: 400
+                    }}
+                  >
+                    Please add an image
+                  </Typography>
+                : ''
+            }
 
           </DialogContent>
           <DialogActions>

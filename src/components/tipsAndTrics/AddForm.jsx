@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, makeStyles } from '@material-ui/core';
+import { Checkbox, FormControlLabel, makeStyles, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -24,6 +24,7 @@ export default function AddForm({ forceUpdate }) {
   const [open, setOpen] = React.useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -31,25 +32,29 @@ export default function AddForm({ forceUpdate }) {
   const [videoLink, setVideoLink] = useState('');
   const [image, setImage] = useState(null);
 
+  const clearAll = () => {
+    setTitle('');
+    setContent('');
+    setIsVideo(false);
+    setVideoLink('');
+    setImage(null);
+    setIsSubmit(false);
+  }
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-
-    setTitle('');
-    setContent('');
-    setIsVideo(false);
-    setVideoLink('');
-    setImage(null);
+    clearAll();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmit(true);
 
-    if (!title || !content || (isVideo && !videoLink) || !image)
-      return alert('Please fillup the form');
+    if (!title || !content || (isVideo && !videoLink) || !image) return;
 
     setOpen(false);
 
@@ -74,22 +79,14 @@ export default function AddForm({ forceUpdate }) {
       if (response) {
         setIsLoading(false);
 
-        setTitle('');
-        setContent('');
-        setIsVideo(false);
-        setVideoLink('');
-        setImage(null);
+        clearAll();
 
         forceUpdate();
       }
     } catch (err) {
       setIsLoading(false);
 
-      setTitle('');
-      setContent('');
-      setIsVideo(false);
-      setVideoLink('');
-      setImage(null);
+      clearAll();
 
       alert(err.response.data.message || 'Something went wrong');
     }
@@ -113,10 +110,12 @@ export default function AddForm({ forceUpdate }) {
           <DialogContent>
             <DialogContentText>
               Please fill up the form...
-          </DialogContentText>
+            </DialogContentText>
 
             <TextField
               autoFocus
+              error={isSumbit && !title}
+              helperText={(isSumbit && !title) ? 'Please add a title' : ''}
               margin="dense"
               name="title"
               label="Title"
@@ -138,7 +137,8 @@ export default function AddForm({ forceUpdate }) {
             />
 
             <TextField
-              autoFocus
+              error={isSumbit && isVideo && !videoLink}
+              helperText={(isSumbit && isVideo && !videoLink) ? 'Please add a video link' : ''}
               margin="dense"
               name="videoLink"
               label="Video Link"
@@ -148,20 +148,22 @@ export default function AddForm({ forceUpdate }) {
               onChange={e => setVideoLink(e.target.value)}
               style={{ marginBottom: 36 }}
             />
-
-            {/* <TextField
-              autoFocus
-              margin="dense"
-              name="content"
-              label="Content"
-              multiline
-              fullWidth
-              value={content}
-              style={{ marginBottom: 36 }}
-              onChange={e => setContent(e.target.value)}
-            /> */}
             
             <RichTextEditor text={content} setText={setContent} />
+            {
+              isSumbit && !content
+                ? <Typography
+                    color='error'
+                    style={{
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.03333em',
+                      fontWeight: 400
+                    }}
+                  >
+                    Please add content
+                  </Typography>
+                : ''
+            }
 
             <span style={{ display: 'inline-block', width: '100%', marginTop: 36 }}>
               <input
@@ -187,6 +189,20 @@ export default function AddForm({ forceUpdate }) {
               </Button>
               </label>
             </span>
+            {
+              isSumbit && !image
+                ? <Typography
+                    color='error'
+                    style={{
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.03333em',
+                      fontWeight: 400
+                    }}
+                  >
+                    Please add an image
+                  </Typography>
+                : ''
+            }
 
           </DialogContent>
           <DialogActions>

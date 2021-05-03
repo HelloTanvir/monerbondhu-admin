@@ -18,6 +18,7 @@ import Loader from '../Loader';
 import ShowFullContent from '../utils/ShowFullContent';
 import AddForm from './addForm/AddForm';
 import EditDescription from './EditDescription';
+import EditService from './EditService';
 import Image from './Image';
 import ShowService from './ShowService';
 
@@ -91,6 +92,7 @@ export default function DataTable({ apiData, designations, services, forceUpdate
   const [designation, setDesignation] = useState('');
   const [visitingDay, setVisitingDay] = useState('');
   const [description, setDescription] = useState('');
+  const [newServices, setNewServices] = useState([]);
 
   const handleClose = () => {
     setIsEditing(false);
@@ -102,6 +104,7 @@ export default function DataTable({ apiData, designations, services, forceUpdate
     setDesignation('');
     setVisitingDay('');
     setDescription('');
+    setNewServices([]);
   };
 
   const handleDelete = async (id) => {
@@ -140,7 +143,8 @@ export default function DataTable({ apiData, designations, services, forceUpdate
       name,
       designation,
       visitingDay,
-      description
+      description,
+      service: newServices,
     };
 
     const token = `Bearer ${localStorage.getItem('token')}`;
@@ -296,7 +300,12 @@ export default function DataTable({ apiData, designations, services, forceUpdate
                 <StyledTableCell>
                   {
                     isEditing && editingIdx === idx
-                      ? <ShowService services={row.service} isEditing={true} />
+                      ? <EditService
+                          services={row.service}
+                          serviceOptions={services}
+                          newServices={newServices}
+                          setNewServices={setNewServices}
+                        />
                       : <ShowService services={row.service} />
                   }
                 </StyledTableCell>

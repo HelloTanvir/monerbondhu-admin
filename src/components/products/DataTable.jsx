@@ -42,18 +42,23 @@ export default function MediaCard({ apiData, forceUpdate }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingIdx, setEditingIdx] = useState(-1);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [dis, setDis] = useState('');
 
-  const handleClose = () => {
-    setIsEditing(false);
-    setEditingIdx(-1);
-
+  const clearAll = () => {
     setName('');
     setPrice('');
     setDis('');
+    setEditingIdx(-1);
+    setIsSubmit(false);
+  }
+
+  const handleClose = () => {
+    setIsEditing(false);
+    clearAll();
   };
 
   const editButtonHandler = (updatedName, updatedPrice, updatedDis, idx) => {
@@ -65,7 +70,8 @@ export default function MediaCard({ apiData, forceUpdate }) {
   }
 
   const handleEdit = async id => {
-    if (!name || !price || !dis) return alert('Please fillup the form');
+    setIsSubmit(true);
+    if (!name || !price || !dis) return;
 
     setIsEditing(false);
     setIsLoading(true);
@@ -78,18 +84,16 @@ export default function MediaCard({ apiData, forceUpdate }) {
 
       if (response) {
         setIsLoading(false);
+
         forceUpdate();
-        setEditingIdx(-1);
-        setName('');
-        setPrice('');
-        setDis('');
+        
+        clearAll();
       }
     } catch (err) {
       setIsLoading(false);
-      setEditingIdx(-1);
-      setName('');
-      setPrice('');
-      setDis('');
+
+      clearAll();
+
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
@@ -137,52 +141,59 @@ export default function MediaCard({ apiData, forceUpdate }) {
                   {
                     (isEditing && editingIdx === idx)
                       ? <TextField
-                        id="name"
-                        label="Name"
-                        variant="outlined"
-                        fullWidth
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                      />
+                          autoFocus
+                          error={isSumbit && !name}
+                          helperText={(isSumbit && !name) ? 'Please add a name' : ''}
+                          id="name"
+                          label="Name"
+                          variant="outlined"
+                          fullWidth
+                          value={name}
+                          onChange={e => setName(e.target.value)}
+                        />
                       : <Typography gutterBottom variant="h5" component="h2">
-                        {data.name}
-                      </Typography>
+                          {data.name}
+                        </Typography>
                   }
 
                   <Typography>
                     {
                       (isEditing && editingIdx === idx)
                         ? <TextField
-                          id="price"
-                          label="Price"
-                          variant="outlined"
-                          style={{ margin: '8px 0' }}
-                          fullWidth
-                          value={price}
-                          onChange={e => setPrice(e.target.value)}
-                        />
+                            error={isSumbit && !price}
+                            helperText={(isSumbit && !price) ? 'Please add price' : ''}
+                            id="price"
+                            label="Price"
+                            variant="outlined"
+                            style={{ margin: '8px 0' }}
+                            fullWidth
+                            value={price}
+                            onChange={e => setPrice(e.target.value)}
+                          />
                         : <>
-                          <Typography
-                            variant="h6"
-                            color='textPrimary'
-                            style={{ fontSize: 16, display: 'inline-block', }}
-                          >
-                            Price:
-                          </Typography> {data.price} <br />
-                        </>
+                            <Typography
+                              variant="h6"
+                              color='textPrimary'
+                              style={{ fontSize: 16, display: 'inline-block', }}
+                            >
+                              Price:
+                            </Typography> {data.price} <br />
+                          </>
                     }
 
                     {
                       (isEditing && editingIdx === idx)
                         ? <TextField
-                          id="description"
-                          label="Description"
-                          variant="outlined"
-                          multiline
-                          fullWidth
-                          value={dis}
-                          onChange={e => setDis(e.target.value)}
-                        />
+                            error={isSumbit && !dis}
+                            helperText={(isSumbit && !dis) ? 'Please add a description' : ''}
+                            id="description"
+                            label="Description"
+                            variant="outlined"
+                            multiline
+                            fullWidth
+                            value={dis}
+                            onChange={e => setDis(e.target.value)}
+                          />
                         : <>
                           <Typography
                             variant="h6"

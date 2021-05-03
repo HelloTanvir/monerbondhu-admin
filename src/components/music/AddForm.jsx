@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
+import { FormControl, FormHelperText, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -26,6 +26,7 @@ export default function AddForm({ forceUpdate }) {
   const [openSubType, setOpenSubType] = React.useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -33,25 +34,29 @@ export default function AddForm({ forceUpdate }) {
   const [image, setImage] = useState(null);
   const [music, setMusic] = useState(null);
 
+  const clearAll = () => {
+    setName('');
+    setCategory('');
+    setSubType('');
+    setImage(null);
+    setMusic(null);
+    setIsSubmit(false);
+  }
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-
-    setName('');
-    setCategory('');
-    setSubType('');
-    setImage(null);
-    setMusic(null);
+    clearAll();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmit(true);
 
-    if (!image || !name || !category || !subType || !music)
-      return alert('Please fillup the form');
+    if (!image || !name || !category || !subType || !music) return;
 
     setOpen(false);
 
@@ -77,22 +82,14 @@ export default function AddForm({ forceUpdate }) {
       if (response) {
         setIsLoading(false);
 
-        setName('');
-        setCategory('');
-        setSubType('');
-        setImage(null);
-        setMusic(null);
+        clearAll();
 
         forceUpdate();
       }
     } catch (err) {
       setIsLoading(false);
 
-      setName('');
-      setCategory('');
-      setSubType('');
-      setImage(null);
-      setMusic(null);
+      clearAll();
 
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
@@ -114,6 +111,8 @@ export default function AddForm({ forceUpdate }) {
 
             <TextField
               autoFocus
+              error={isSumbit && !name}
+              helperText={(isSumbit && !name) ? 'Please add a name' : ''}
               margin="dense"
               name="name"
               label="Name"
@@ -122,7 +121,7 @@ export default function AddForm({ forceUpdate }) {
               onChange={e => setName(e.target.value)}
             />
 
-            <FormControl fullWidth>
+            <FormControl fullWidth error={isSumbit && !category}>
               <InputLabel id="demo-controlled-open-select-label">Category</InputLabel>
               <Select
                 labelId="demo-controlled-open-select-label"
@@ -137,9 +136,14 @@ export default function AddForm({ forceUpdate }) {
                   ['meditation', 'music', 'stress', 'sleep'].map((category, idx) => <MenuItem key={idx} value={category}>{category}</MenuItem>)
                 }
               </Select>
+              {
+                isSumbit && !category
+                  ? <FormHelperText>Please select a category</FormHelperText>
+                  : ''
+              }
             </FormControl>
 
-            <FormControl fullWidth style={{ marginBottom: 36 }}>
+            <FormControl fullWidth error={isSumbit && !subType} style={{ marginBottom: 36 }}>
               <InputLabel id="demo-controlled-open-select-label-2">Sub Type</InputLabel>
               <Select
                 labelId="demo-controlled-open-select-label-2"
@@ -154,6 +158,11 @@ export default function AddForm({ forceUpdate }) {
                   ['free', 'paid'].map((subType, idx) => <MenuItem key={idx} value={subType}>{subType}</MenuItem>)
                 }
               </Select>
+              {
+                isSumbit && !subType
+                  ? <FormHelperText>Please select a type</FormHelperText>
+                  : ''
+              }
             </FormControl>
 
             <span>
@@ -180,6 +189,20 @@ export default function AddForm({ forceUpdate }) {
               </Button>
               </label>
             </span>
+            {
+              isSumbit && !image
+                ? <Typography
+                    color='error'
+                    style={{
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.03333em',
+                      fontWeight: 400
+                    }}
+                  >
+                    Please add an image
+                  </Typography>
+                : ''
+            }
 
             <div style={{ marginTop: 10 }}>
               <input
@@ -205,6 +228,20 @@ export default function AddForm({ forceUpdate }) {
               </Button>
               </label>
             </div>
+            {
+              isSumbit && !music
+                ? <Typography
+                    color='error'
+                    style={{
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.03333em',
+                      fontWeight: 400
+                    }}
+                  >
+                    Please add a music
+                  </Typography>
+                : ''
+            }
 
           </DialogContent>
           <DialogActions>

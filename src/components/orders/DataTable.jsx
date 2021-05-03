@@ -61,6 +61,7 @@ export default function DataTable({ apiData, forceUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editingIdx, setEditingIdx] = useState(-1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [name, setName] = useState('');
   const [givenNumber, setGivenNumber] = useState(null);
@@ -70,6 +71,18 @@ export default function DataTable({ apiData, forceUpdate }) {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('');
   const [orderStatus, setOrderStatus] = useState('');
+
+  const clearAll = () => {
+    setName('');
+    setGivenNumber(null);
+    setAddress('');
+    setQty('');
+    setUserNumber(null);
+    setPaymentMethod('');
+    setPaymentStatus('');
+    setOrderStatus('');
+    setIsSubmit(false);
+  }
 
   const handleClose = () => {
     setIsEditing(false);
@@ -92,8 +105,9 @@ export default function DataTable({ apiData, forceUpdate }) {
   }
 
   const handleSubmit = async (id) => {
-    if (!name || !givenNumber || !address || !qty || !userNumber || !paymentMethod || !paymentStatus || !orderStatus)
-      return alert('Please select a state');
+    setIsSubmit(true);
+
+    if (!name || !givenNumber || !address || !qty || !userNumber || !paymentMethod || !paymentStatus || !orderStatus) return;
 
     setIsEditing(false);
     setEditingIdx(-1);
@@ -119,28 +133,15 @@ export default function DataTable({ apiData, forceUpdate }) {
 
       if (response) {
         setIsLoading(false);
+
         forceUpdate();
 
-        setName('');
-        setGivenNumber(null);
-        setAddress('');
-        setQty('');
-        setUserNumber(null);
-        setPaymentMethod('');
-        setPaymentStatus('');
-        setOrderStatus('');
+        clearAll();
       }
     } catch (err) {
       setIsLoading(false);
 
-      setName('');
-      setGivenNumber(null);
-      setAddress('');
-      setQty('');
-      setUserNumber(null);
-      setPaymentMethod('');
-      setPaymentStatus('');
-      setOrderStatus('');
+      clearAll();
 
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
@@ -182,6 +183,9 @@ export default function DataTable({ apiData, forceUpdate }) {
                   {
                     isEditing && editingIdx === idx
                       ? <TextField
+                          autoFocus
+                          error={isSumbit && !name}
+                          helperText={(isSumbit && !name) ? 'empty !' : ''}
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           className={classes.textField}
@@ -194,6 +198,8 @@ export default function DataTable({ apiData, forceUpdate }) {
                   {
                     isEditing && editingIdx === idx
                       ? <TextField
+                          error={isSumbit && !givenNumber}
+                          helperText={(isSumbit && !givenNumber) ? 'empty !' : ''}
                           value={givenNumber}
                           onChange={(e) => setGivenNumber(e.target.value)}
                           className={classes.textField}
@@ -207,6 +213,8 @@ export default function DataTable({ apiData, forceUpdate }) {
                   {
                     isEditing && editingIdx === idx
                       ? <TextField
+                          error={isSumbit && !address}
+                          helperText={(isSumbit && !address) ? 'empty !' : ''}
                           value={address}
                           onChange={(e) => setAddress(e.target.value)}
                           className={classes.textField}
@@ -291,6 +299,8 @@ export default function DataTable({ apiData, forceUpdate }) {
                   {
                     isEditing && editingIdx === idx
                       ? <TextField
+                          error={isSumbit && !qty}
+                          helperText={(isSumbit && !qty) ? 'empty !' : ''}
                           value={qty}
                           onChange={(e) => setQty(e.target.value)}
                           className={classes.textField}
@@ -303,6 +313,8 @@ export default function DataTable({ apiData, forceUpdate }) {
                   {
                     isEditing && editingIdx === idx
                       ? <TextField
+                          error={isSumbit && !userNumber}
+                          helperText={(isSumbit && !userNumber) ? 'empty !' : ''}
                           value={userNumber}
                           onChange={(e) => setUserNumber(e.target.value)}
                           className={classes.textField}

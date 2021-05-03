@@ -12,9 +12,16 @@ import Loader from '../../Loader';
 export default function AddForm({ forceUpdate }) {
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [service, setService] = useState('');
   const [description, setDescription] = useState('');
+
+  const clearAll = () => {
+    setService('');
+    setDescription('');
+    setIsSubmit(false);
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -22,15 +29,14 @@ export default function AddForm({ forceUpdate }) {
 
   const handleClose = () => {
     setOpen(false);
-    setService('');
-    setDescription('');
+    clearAll();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmit(true);
 
-    if (!service || !description)
-      return alert('Please fillup the form');
+    if (!service || !description) return;
 
     setOpen(false);
 
@@ -51,13 +57,11 @@ export default function AddForm({ forceUpdate }) {
       if (response) {
         forceUpdate();
         setIsLoading(false);
-        setService('');
-        setDescription('');
+        clearAll();
       }
     } catch (err) {
       setIsLoading(false);
-      setService('');
-      setDescription('');
+      clearAll();
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
@@ -74,9 +78,11 @@ export default function AddForm({ forceUpdate }) {
           <DialogContent>
             <DialogContentText>
               Please fill up the form...
-          </DialogContentText>
+            </DialogContentText>
             <TextField
               autoFocus
+              error={isSumbit && !service}
+              helperText={(isSumbit && !service) ? 'Please provide a service' : ''}
               margin="dense"
               name="service"
               label="Service"
@@ -86,7 +92,8 @@ export default function AddForm({ forceUpdate }) {
             />
 
             <TextField
-              autoFocus
+              error={isSumbit && !description}
+              helperText={(isSumbit && !description) ? 'Please provide a description' : ''}
               margin="dense"
               name="description"
               label="Description"

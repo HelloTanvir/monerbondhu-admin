@@ -53,6 +53,7 @@ const Login = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isSumbit, setIsSubmit] = useState(false);
 
     const classes = useStyles();
 
@@ -61,8 +62,9 @@ const Login = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        setIsSubmit(true);
 
-        if (!username || !password) return alert('Please provide username and password');
+        if (!username || !password) return;
 
         setIsLoading(true);
 
@@ -74,6 +76,7 @@ const Login = () => {
 
             if (response) {
                 setErrorMsg('');
+                setIsSubmit(false);
                 setIsLoading(false);
             }
 
@@ -81,8 +84,8 @@ const Login = () => {
 
             history.push('/dashboard');
         } catch (err) {
-            console.log(err);
             setErrorMsg(err?.response?.data?.message ?? 'Something went wrong');
+            setIsSubmit(false);
             setIsLoading(false);
             // alert(err?.response?.data?.message ?? 'Something went wrong');
         }
@@ -99,10 +102,12 @@ const Login = () => {
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Log in
-            </Typography>
+                    </Typography>
                     <form className={classes.form} noValidate onSubmit={submitHandler}>
                         <TextField
                             variant="outlined"
+                            error={isSumbit && !username}
+                            helperText={(isSumbit && !username) ? 'Empty username' : ''}
                             margin="normal"
                             required
                             fullWidth
@@ -118,6 +123,8 @@ const Login = () => {
                         }
                         <TextField
                             variant="outlined"
+                            error={isSumbit && !password}
+                            helperText={(isSumbit && !password) ? 'Empty password' : ''}
                             margin="normal"
                             required
                             fullWidth
@@ -140,7 +147,7 @@ const Login = () => {
                             className={classes.submit}
                         >
                             Log In
-            </Button>
+                        </Button>
                     </form>
                 </div>
                 <Box mt={8}>

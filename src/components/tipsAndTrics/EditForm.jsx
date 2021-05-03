@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,9 +15,16 @@ export default function EditForm({ forceUpdate, currentData }) {
   const [open, setOpen] = React.useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+
+  const clearAll = () => {
+    setTitle('');
+    setContent('');
+    setIsSubmit(false);
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -24,9 +32,7 @@ export default function EditForm({ forceUpdate, currentData }) {
 
   const handleClose = () => {
     setOpen(false);
-
-    setTitle('');
-    setContent('');
+    clearAll();
   };
 
   const editButtonHandler = (updatedTitle, updatedContent) => {
@@ -36,7 +42,9 @@ export default function EditForm({ forceUpdate, currentData }) {
   }
 
   const handleEdit = async id => {
-    if (!title || !content) return alert('Please fillup the form');
+    setIsSubmit(true);
+
+    if (!title || !content) return;
 
     setOpen(false);
     setIsLoading(true);
@@ -51,16 +59,14 @@ export default function EditForm({ forceUpdate, currentData }) {
       if (response) {
         setIsLoading(false);
 
-        setTitle('');
-        setContent('');
+        clearAll();
 
         forceUpdate();
       }
     } catch (err) {
       setIsLoading(false);
 
-      setTitle('');
-      setContent('');
+      clearAll();
 
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
@@ -90,6 +96,8 @@ export default function EditForm({ forceUpdate, currentData }) {
 
             <TextField
               autoFocus
+              error={isSumbit && !title}
+              helperText={(isSumbit && !title) ? 'Please add a title' : ''}
               margin="dense"
               name="title"
               label="Title"
@@ -99,19 +107,21 @@ export default function EditForm({ forceUpdate, currentData }) {
               style={{ marginBottom: 15 }}
             />
 
-            {/* <TextField
-              autoFocus
-              margin="dense"
-              name="content"
-              label="Content"
-              multiline
-              fullWidth
-              value={content}
-              style={{ marginBottom: 36 }}
-              onChange={e => setContent(e.target.value)}
-            /> */}
-
             <RichTextEditor text={content} setText={setContent} />
+            {
+              isSumbit && !content
+                ? <Typography
+                    color='error'
+                    style={{
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.03333em',
+                      fontWeight: 400
+                    }}
+                  >
+                    Please add content
+                  </Typography>
+                : ''
+            }
 
           </DialogContent>
           <DialogActions>

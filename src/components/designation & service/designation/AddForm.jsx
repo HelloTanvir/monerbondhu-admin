@@ -12,8 +12,14 @@ import Loader from '../../Loader';
 export default function AddForm({ forceUpdate }) {
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [designation, setDesignation] = useState('');
+
+  const clearAll = () => {
+    setDesignation('');
+    setIsSubmit(false);
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,14 +27,14 @@ export default function AddForm({ forceUpdate }) {
 
   const handleClose = () => {
     setOpen(false);
-    setDesignation('');
+    clearAll();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmit(true);
 
-    if (!designation)
-      return alert('Please fillup the form');
+    if (!designation) return;
 
     setOpen(false);
 
@@ -44,11 +50,11 @@ export default function AddForm({ forceUpdate }) {
       if (response) {
         forceUpdate();
         setIsLoading(false);
-        setDesignation('');
+        clearAll();
       }
     } catch (err) {
       setIsLoading(false);
-      setDesignation('');
+      clearAll();
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
   };
@@ -65,9 +71,11 @@ export default function AddForm({ forceUpdate }) {
           <DialogContent>
             <DialogContentText>
               Please fill up the form...
-          </DialogContentText>
+            </DialogContentText>
             <TextField
               autoFocus
+              error={isSumbit && !designation}
+              helperText={(isSumbit && !designation) ? 'Please provide a designation' : ''}
               margin="dense"
               name="designation"
               label="Designation"

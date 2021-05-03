@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
+import { FormControl, FormHelperText, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -26,6 +26,7 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
   const [openSelect, setOpenSelect] = React.useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -35,13 +36,7 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
   const [image, setImage] = useState(null);
   const [services, setServices] = useState([]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-
+  const clearAll = () => {
     setName('');
     setDescription('');
     setServices([]);
@@ -49,6 +44,16 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
     setVisitingTime('');
     setDesignation('');
     setImage(null);
+    setIsSubmit(false);
+  }
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    clearAll();
   };
 
   const handleServiceRemove = (idx) => {
@@ -61,9 +66,9 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmit(true);
 
-    if (!name || !description || !services.length || !visitingDay || !visitingTime || !designation || !image)
-         return alert('Please fillup the form');
+    if (!name || !description || !services.length || !visitingDay || !visitingTime || !designation || !image) return;
 
     setOpen(false);
 
@@ -90,26 +95,14 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
       if (response) {
         setIsLoading(false);
 
-        setName('');
-        setDescription('');
-        setServices([]);
-        setVisitingDay('');
-        setVisitingTime('');
-        setDesignation('');
-        setImage(null);
+        clearAll();
 
         forceUpdate();
       }
     } catch (err) {
       setIsLoading(false);
 
-      setName('');
-      setDescription('');
-      setServices([]);
-      setVisitingDay('');
-      setVisitingTime('');
-      setDesignation('');
-      setImage(null);
+      clearAll();
 
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
@@ -127,10 +120,12 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
           <DialogContent>
             <DialogContentText>
               Please fill up the form...
-          </DialogContentText>
+            </DialogContentText>
 
             <TextField
               autoFocus
+              error={isSumbit && !name}
+              helperText={(isSumbit && !name) ? 'Please provide your name' : ''}
               margin="dense"
               name="name"
               label="Name"
@@ -139,7 +134,7 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
               onChange={e => setName(e.target.value)}
             />
 
-            <FormControl fullWidth>
+            <FormControl fullWidth error={isSumbit && !designation}>
               <InputLabel id="demo-controlled-open-select-label">Designation</InputLabel>
               <Select
                 labelId="demo-controlled-open-select-label"
@@ -154,10 +149,16 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
                   designations.map((designation, idx) => <MenuItem key={idx} value={designation}>{designation}</MenuItem>)
                 }
               </Select>
+              {
+                isSumbit && !designation
+                  ? <FormHelperText>Please select a designation</FormHelperText>
+                  : ''
+              }
             </FormControl>
 
             <TextField
-              autoFocus
+              error={isSumbit && !visitingDay}
+              helperText={(isSumbit && !visitingDay) ? 'Please provide your visiting day' : ''}
               margin="dense"
               name="visitingDay"
               label="Visiting Day"
@@ -167,7 +168,8 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
             />
 
             <TextField
-              autoFocus
+              error={isSumbit && !visitingTime}
+              helperText={(isSumbit && !visitingTime) ? 'Please provide your visiting time' : ''}
               margin="dense"
               name="visitingTime"
               label="Visiting Time"
@@ -177,7 +179,8 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
             />
 
             <TextField
-              autoFocus
+              error={isSumbit && !description}
+              helperText={(isSumbit && !description) ? 'Please write a description' : ''}
               margin="dense"
               name="description"
               label="Description"
@@ -192,6 +195,20 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
               services={services}
               setServices={setServices}
             />
+            {
+              isSumbit && !services.length
+                ? <Typography
+                    color='error'
+                    style={{
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.03333em',
+                      fontWeight: 400
+                    }}
+                  >
+                    Please add service
+                  </Typography>
+                : ''
+            }
 
             <Typography>
               {
@@ -245,6 +262,20 @@ export default function AddForm({ designations, serviceOptions, forceUpdate }) {
               </Button>
               </label>
             </span>
+            {
+              isSumbit && !image
+                ? <Typography
+                    color='error'
+                    style={{
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.03333em',
+                      fontWeight: 400
+                    }}
+                  >
+                    Please add an image
+                  </Typography>
+                : ''
+            }
 
           </DialogContent>
           <DialogActions>

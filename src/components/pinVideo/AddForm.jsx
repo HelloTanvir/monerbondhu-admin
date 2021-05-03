@@ -14,9 +14,16 @@ export default function AddForm({ forceUpdate }) {
   const [open, setOpen] = React.useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSumbit, setIsSubmit] = useState(false);
 
   const [name, setName] = useState('');
   const [ytlink, setYtlink] = useState('');
+
+  const clearAll = () => {
+    setName('');
+    setYtlink('');
+    setIsSubmit(false);
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -24,16 +31,14 @@ export default function AddForm({ forceUpdate }) {
 
   const handleClose = () => {
     setOpen(false);
-
-    setName('');
-    setYtlink('');
+    clearAll();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmit(true);
 
-    if (!name || !ytlink)
-      return alert('Please fillup the form');
+    if (!name || !ytlink) return;
 
     setOpen(false);
 
@@ -50,16 +55,14 @@ export default function AddForm({ forceUpdate }) {
       if (response) {
         setIsLoading(false);
 
-        setName('');
-        setYtlink('');
+        clearAll();
 
         forceUpdate();
       }
     } catch (err) {
       setIsLoading(false);
 
-      setName('');
-      setYtlink('');
+      clearAll();
 
       alert(err?.response?.data?.message ?? 'Something went wrong');
     }
@@ -80,6 +83,8 @@ export default function AddForm({ forceUpdate }) {
           </DialogContentText>
             <TextField
               autoFocus
+              error={isSumbit && !name}
+              helperText={(isSumbit && !name) ? 'Please add a name' : ''}
               margin="dense"
               name="name"
               label="Name"
@@ -89,7 +94,8 @@ export default function AddForm({ forceUpdate }) {
             />
 
             <TextField
-              autoFocus
+              error={isSumbit && !ytlink}
+              helperText={(isSumbit && !ytlink) ? 'Please add youtube link' : ''}
               margin="dense"
               name="ytlink"
               label="Youtube Link"
